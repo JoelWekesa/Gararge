@@ -1,13 +1,27 @@
 const express = require("express");
 const { json, urlencoded } = require("express");
-const { usersAPI } = require("./routes/users");
-const { addStaffAPI } = require("./routes/staff");
-const { removeStaffAPI } = require("./routes/removeStaff");
-const { addAdminAPI } = require("./routes/addAdmin");
-const { removeAdminAPI } = require("./routes/removeAdmin");
+
+//? Staff APIs
+const {
+	allStaffAPI,
+	addStaffAPI,
+	staffPasswordAPI,
+	removeStaffAPI,
+} = require("./routes/staff");
+
+//? Admin APIs
+const { addAdminAPI, removeAdminAPI } = require("./routes/admin");
+
+//? Login API
 const { loginAPI } = require("./routes/login");
-const { staffPasswordAPI } = require("./routes/staffPassword");
-// const { db } = require("./db/db");
+
+//? Supplies APIs
+const { addSuppliesAPI } = require("./routes/supplies");
+
+//? Sales APIs
+const { makeSaleAPI } = require("./routes/sales");
+
+//? Staff and admin middleware
 const { admin, superAdmin } = require("./middleware/staff");
 
 const app = express();
@@ -15,20 +29,15 @@ const app = express();
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-// try {
-// 	db.authenticate();
-// 	console.log("Connection has been established successfully.");
-// } catch (error) {
-// 	console.error("Unable to connect to the database:", error);
-// }
-
-app.use("/users", usersAPI);
+app.use("/api/all/staff", [admin], allStaffAPI);
 app.use("/api/staff/add", [admin], addStaffAPI);
 app.use("/api/staff/remove", [superAdmin], removeStaffAPI);
 app.use("/api/admin/add", [superAdmin], addAdminAPI);
 app.use("/api/admin/remove", [superAdmin], removeAdminAPI);
 app.use("/api/auth/login", loginAPI);
 app.use("/api/password/default", staffPasswordAPI);
+app.use("/api/supplies/add", [admin], addSuppliesAPI);
+app.use("/api/make/sale", [admin], makeSaleAPI);
 
 const PORT = process.env.PORT || 5000;
 

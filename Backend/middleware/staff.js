@@ -17,22 +17,14 @@ const admin = async (req, res, next) => {
 				});
 			}
 
-			const { id } = decoded;
-			await Users.findByPk(id)
-				.then((user) => {
-					if (user.admin || user.super_admin) {
-						next();
-					} else {
-						return res.status(403).json({
-							error: "You are not authorized to perform this action.",
-						});
-					}
-				})
-				.catch((err) => {
-					return res.status(403).json({
-						error: err.message,
-					});
+			const { admin, super_admin } = decoded;
+			if (admin || super_admin) {
+				next();
+			} else {
+				return res.status(403).json({
+					error: "You are not authorized to perform this action.",
 				});
+			}
 		});
 	} catch (err) {
 		return res.status(500).json({
@@ -49,29 +41,20 @@ const superAdmin = async (req, res, next) => {
 				error: "No access token provided!",
 			});
 		}
-		await jwt.verify(token, secrets, async (err, decoded) => {
+		await jwt.verify(token, secrets, (err, decoded) => {
 			if (err) {
 				return res.status(403).json({
 					error: err.message,
 				});
 			}
 
-			const { id } = decoded;
-			await Users.findByPk(id)
-				.then((user) => {
-					if (!user.super_admin) {
-						return res.status(403).json({
-							error: "You are not authorized to perform this action.",
-						});
-					}
-
-					next();
-				})
-				.catch((err) => {
-					return res.status(403).json({
-						error: err.message,
-					});
+			const { super_admin } = decoded;
+			if (!super_admin) {
+				return res.status(403).json({
+					error: "You are not authorized to perform this action.",
 				});
+			}
+			next();
 		});
 	} catch (err) {
 		return res.status(500).json({

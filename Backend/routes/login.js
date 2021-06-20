@@ -35,8 +35,8 @@ router.post("/", (req, res) => {
 					});
 				}
 
-				const { id } = user;
-				const token = jwt.sign({ id: id }, secrets, {
+				const { id, admin, super_admin } = user;
+				const token = jwt.sign({ id, admin, super_admin }, secrets, {
 					expiresIn: 60 * 60 * 8,
 				});
 				return res.status(200).json({
