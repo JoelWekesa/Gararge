@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
-const { Users } = require("../models/Staff");
 const { Sales } = require("../models/Sales");
 const { Supplies } = require("../models/Supplies");
 const { secrets } = process.env;
@@ -78,7 +77,7 @@ const makeSaleAPI = router.post("/:id", async (req, res) => {
 								});
 						})
 						.catch((err) => {
-							return res.status(500).json({
+							return res.status(400).json({
 								error: err.message,
 							});
 						});

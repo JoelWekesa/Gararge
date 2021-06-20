@@ -16,7 +16,7 @@ const { addAdminAPI, removeAdminAPI } = require("./routes/admin");
 const { loginAPI } = require("./routes/login");
 
 //? Supplies APIs
-const { addSuppliesAPI } = require("./routes/supplies");
+const { addSuppliesAPI, editSuppliesAPI } = require("./routes/supplies");
 
 //? Sales APIs
 const { makeSaleAPI } = require("./routes/sales");
@@ -37,6 +37,7 @@ app.use("/api/admin/remove", [superAdmin], removeAdminAPI);
 app.use("/api/auth/login", loginAPI);
 app.use("/api/password/default", staffPasswordAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
+app.use("/api/supplies/edit", [admin], editSuppliesAPI);
 app.use("/api/make/sale", [admin], makeSaleAPI);
 
 const PORT = process.env.PORT || 5000;
