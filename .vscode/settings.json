@@ -3,6 +3,7 @@
         "hstore",
         "operationalize",
         "operationalized",
-        "pg"
+        "pg",
+        "ppes"
     ]
 }

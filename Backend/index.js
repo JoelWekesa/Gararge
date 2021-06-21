@@ -31,6 +31,17 @@ const {
 
 const { deprecateMachineAPI } = require("./routes/machines/deprecate");
 
+//? PPEs API
+const { getAllPPEs } = require("./routes/PPEs/all");
+const { addPPEsAPI } = require("./routes/PPEs/add");
+const { editPPEsAPI } = require("./routes/PPEs/edit");
+const { assignPPEsAPI } = require("./routes/PPEs/assign");
+
+//? Tools API
+
+const { getAllToolsAPI } = require("./routes/Tools/all");
+const { addToolsAPI } = require("./routes/Tools/add");
+
 //? Staff and admin middleware
 const { staff } = require("./middleware/staff/check");
 const { admin } = require("./middleware/admin/check");
@@ -55,6 +66,12 @@ app.use("/api/machines/all", [staff], getAllMachinesAPI);
 app.use("/api/machine/add", [admin], addMachinesAPI);
 app.use("/api/machine/deprecate", [superAdmin], deprecateMachineAPI);
 app.use("/api/machine/operationalize", [superAdmin], operationalizeMachineAPI);
+app.use("/api/ppes/all", [admin], getAllPPEs);
+app.use("/api/ppes/add", [admin], addPPEsAPI);
+app.use("/api/ppes/edit", [admin], editPPEsAPI);
+app.use("/api/ppes/assign", [admin], assignPPEsAPI);
+app.use("/api/tools/all", [admin], getAllToolsAPI);
+app.use("/api/tools/add", [superAdmin], addToolsAPI);
 
 const PORT = process.env.PORT || 5000;
 
