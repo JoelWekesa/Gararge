@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
-const { Sales } = require("../models/Sales");
-const { Supplies } = require("../models/Supplies");
+const { Sales } = require("../../models/Sales");
+const { Supplies } = require("../../models/Supplies");
 const { secrets } = process.env;
 
 const router = Router();
