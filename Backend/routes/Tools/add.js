@@ -34,6 +34,7 @@ const addToolsAPI = router.post("/", async (req, res) => {
 			name,
 			description,
 			quantity,
+			available: quantity,
 		})
 			.then((tool) => {
 				return res.status(200).json({

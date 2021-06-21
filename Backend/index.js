@@ -38,9 +38,10 @@ const { editPPEsAPI } = require("./routes/PPEs/edit");
 const { assignPPEsAPI } = require("./routes/PPEs/assign");
 
 //? Tools API
-
 const { getAllToolsAPI } = require("./routes/Tools/all");
 const { addToolsAPI } = require("./routes/Tools/add");
+const { editToolsAPI } = require("./routes/Tools/edit");
+const { assignToolsAPI } = require("./routes/Tools/assign");
 
 //? Staff and admin middleware
 const { staff } = require("./middleware/staff/check");
@@ -72,6 +73,8 @@ app.use("/api/ppes/edit", [admin], editPPEsAPI);
 app.use("/api/ppes/assign", [admin], assignPPEsAPI);
 app.use("/api/tools/all", [admin], getAllToolsAPI);
 app.use("/api/tools/add", [superAdmin], addToolsAPI);
+app.use("/api/tools/edit", [superAdmin], editToolsAPI);
+app.use("/api/tools/assign", [admin], assignToolsAPI);
 
 const PORT = process.env.PORT || 5000;
 

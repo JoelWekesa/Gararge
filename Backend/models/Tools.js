@@ -11,6 +11,9 @@ const Tools = db.define("Tools", {
 	quantity: {
 		type: DataTypes.BIGINT,
 	},
+	available: {
+		type: DataTypes.BIGINT,
+	},
 	in_operation: {
 		type: DataTypes.BOOLEAN,
 	},
