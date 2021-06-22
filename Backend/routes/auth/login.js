@@ -6,7 +6,7 @@ const { Users } = require("../../models/Staff");
 
 const router = Router();
 
-router.post("/", (req, res) => {
+const loginAPI = router.post("/", (req, res) => {
 	try {
 		const { username, password } = req.body;
 		Users.findOne({
@@ -42,7 +42,6 @@ router.post("/", (req, res) => {
 				return res.status(200).json({
 					user,
 					access_token: token,
-					isAuthenticated: true,
 				});
 			})
 			.catch((err) => {
@@ -58,5 +57,5 @@ router.post("/", (req, res) => {
 });
 
 module.exports = {
-	loginAPI: router,
+	loginAPI,
 };
