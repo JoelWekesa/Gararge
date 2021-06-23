@@ -44,6 +44,9 @@ const { addToolsAPI } = require("./routes/Tools/add");
 const { editToolsAPI } = require("./routes/Tools/edit");
 const { assignToolsAPI } = require("./routes/Tools/assign");
 
+//? Departments API
+const { allDepartmentsAPI } = require("./routes/departments/all");
+
 //? Staff and admin middleware
 const { staff } = require("./middleware/staff/check");
 const { admin } = require("./middleware/admin/check");
@@ -77,6 +80,7 @@ app.use("/api/tools/all", [admin], getAllToolsAPI);
 app.use("/api/tools/add", [superAdmin], addToolsAPI);
 app.use("/api/tools/edit", [superAdmin], editToolsAPI);
 app.use("/api/tools/assign", [admin], assignToolsAPI);
+app.use("/api/departments/all", [admin], allDepartmentsAPI);
 
 const PORT = process.env.PORT || 5000;
 
