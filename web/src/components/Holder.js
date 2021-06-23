@@ -53,14 +53,6 @@ export class Holder extends Component {
 									aria-expanded="false">
 									{isAuthenticated ? (
 										<>
-											<div className="nav-profile-img">
-												<img
-													src="/assets/images/faces/face1.jpg"
-													alt="missing"
-												/>
-												<span className="availability-status online"></span>
-											</div>
-
 											<div className="nav-profile-text">
 												<p
 													className="mb-1 text-black"
@@ -257,21 +249,6 @@ export class Holder extends Component {
 				<div className="container-fluid page-body-wrapper">
 					<nav className="sidebar sidebar-offcanvas" id="sidebar">
 						<ul className="nav">
-							<li className="nav-item nav-profile">
-								<a href="/" className="nav-link">
-									<div className="nav-profile-image">
-										<img src="/assets/images/faces/face1.jpg" alt="profile" />
-										<span className="login-status online"></span>
-									</div>
-									<div className="nav-profile-text d-flex flex-column">
-										<span className="font-weight-bold mb-2">David Grey. H</span>
-										<span className="text-secondary text-small">
-											Project Manager
-										</span>
-									</div>
-									<i className="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-								</a>
-							</li>
 							<li className="nav-item">
 								<a className="nav-link" href="/">
 									<span className="menu-title">Dashboard</span>
@@ -285,26 +262,40 @@ export class Holder extends Component {
 									href="#ui-basic"
 									aria-expanded="false"
 									aria-controls="ui-basic">
-									<span className="menu-title">Basic UI Elements</span>
+									<span className="menu-title">Staff</span>
 									<i className="menu-arrow"></i>
-									<i className="mdi mdi-crosshairs-gps menu-icon"></i>
+									<i className="mdi mdi-account-multiple menu-icon"></i>
 								</a>
 								<div className="collapse" id="ui-basic">
 									<ul className="nav flex-column sub-menu">
 										<li className="nav-item">
 											{" "}
-											<a
-												className="nav-link"
-												href="pages/ui-features/buttons.html">
-												Buttons
+											<a className="nav-link" href="/staff/add">
+												Add new staff
 											</a>
 										</li>
 										<li className="nav-item">
 											{" "}
-											<a
-												className="nav-link"
-												href="pages/ui-features/typography.html">
-												Typography
+											<a className="nav-link" href="/staff/add">
+												Add admin
+											</a>
+										</li>
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/staff/add">
+												Reset staff password
+											</a>
+										</li>
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/staff/add">
+												Remove staff
+											</a>
+										</li>
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/staff/add">
+												Remove admin
 											</a>
 										</li>
 									</ul>
@@ -405,10 +396,6 @@ export class Holder extends Component {
 										<div className="border-bottom">
 											<p className="text-secondary">Categories</p>
 										</div>
-										<ul className="gradient-bullet-list mt-4">
-											<li>Free</li>
-											<li>Pro</li>
-										</ul>
 									</div>
 								</span>
 							</li>

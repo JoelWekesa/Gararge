@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Unauthorized from "./Unauthorized";
+import Modal from "react-bootstrap/Modal";
+import Alert from "react-bootstrap/Alert";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
@@ -14,6 +17,7 @@ export class AddStaff extends Component {
 		national_id: "",
 		phone_number: "",
 		department: "",
+		open: false,
 	};
 
 	componentDidMount = () => {
@@ -35,8 +39,16 @@ export class AddStaff extends Component {
 		});
 	};
 
-	handleSubmit = (e) => {
+	handleClose = () => {
+		this.setState({
+			...this.state,
+			open: false,
+		});
+	};
+
+	handleSubmit = async (e) => {
 		e.preventDefault();
+
 		const staff = {
 			staff: true,
 		};
@@ -48,7 +60,8 @@ export class AddStaff extends Component {
 			phone_number,
 			department,
 		} = this.state;
-		this.props.addNewStaff(
+
+		await this.props.addNewStaff(
 			first_name,
 			last_name,
 			username,
@@ -58,24 +71,70 @@ export class AddStaff extends Component {
 			staff,
 			password
 		);
+
+		this.setState({
+			...this.state,
+			first_name: "",
+			last_name: "",
+			username: "",
+			national_id: "",
+			phone_number: "",
+			department: "",
+			open: true,
+		});
+
+		setTimeout(() => {
+			this.setState({
+				...this.state,
+				open: false,
+			});
+		}, 3000);
 	};
 	render() {
-		const { departments, auth } = this.props;
+		const {
+			open,
+			first_name,
+			last_name,
+			username,
+			national_id,
+			phone_number,
+			department,
+		} = this.state;
+		const { departments, auth, newstaff } = this.props;
 		const { isAuthenticated } = auth;
+		const { error, loading } = newstaff;
 
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
 		}
 		const { admin, super_admin } = auth.staff.user;
 		if (!admin && !super_admin) {
-			return <Redirect to="/" />;
+			return <Unauthorized />;
 		}
 		try {
 			const { rows } = departments.departments.departments;
 			return (
 				<div className="grid-margin stretch-card">
+					{!error && !loading ? (
+						<Modal
+							show={open}
+							dialogClassName="modal-90w"
+							aria-labelledby="example-custom-modal-styling-title"
+							size="sm">
+							<Modal.Body>
+								<p>New staff successfully added.</p>
+							</Modal.Body>
+						</Modal>
+					) : null}
+
 					<div className="card">
 						<div className="card-body">
+							{error && !loading && open ? (
+								<Alert variant="danger" onClose={this.handleClose} dismissible>
+									<Alert.Heading>Oh snap!</Alert.Heading>
+									<p>Staff not created.</p>
+								</Alert>
+							) : null}
 							<h4 className="card-title">Hello, let's get started.</h4>
 							<p className="card-description">
 								{" "}
@@ -90,6 +149,7 @@ export class AddStaff extends Component {
 										className="form-control"
 										id="first_name"
 										placeholder="First Name"
+										value={first_name}
 										onChange={this.handleChange}
 									/>
 								</div>
@@ -101,6 +161,7 @@ export class AddStaff extends Component {
 										className="form-control"
 										id="last_name"
 										placeholder="Last Name"
+										value={last_name}
 										onChange={this.handleChange}
 									/>
 								</div>
@@ -112,6 +173,7 @@ export class AddStaff extends Component {
 										className="form-control"
 										id="exampleInputUsername1"
 										placeholder="Username"
+										value={username}
 										onChange={this.handleChange}
 									/>
 								</div>
@@ -124,6 +186,7 @@ export class AddStaff extends Component {
 										className="form-control"
 										id="national_id"
 										placeholder="National ID"
+										value={national_id}
 										onChange={this.handleChange}
 									/>
 								</div>
@@ -135,6 +198,7 @@ export class AddStaff extends Component {
 										className="form-control"
 										id="phone_number"
 										placeholder="Phone Number"
+										value={phone_number}
 										onChange={this.handleChange}
 									/>
 								</div>
@@ -145,7 +209,8 @@ export class AddStaff extends Component {
 										className="form-control form-control-lg"
 										id="department"
 										name="department"
-										onChange={this.handleChange}>
+										onChange={this.handleChange}
+										value={department}>
 										<option>Select Department</option>
 										{rows.map((department) => {
 											return (
@@ -181,6 +246,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
 		departments: state.departments,
+		newstaff: state.newstaff,
 	};
 };
 

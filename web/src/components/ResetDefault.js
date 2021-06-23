@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { userLogin } from "../redux/auth/actions";
+import axios from "axios";
+import Alert from "react-bootstrap/Alert";
+import { baseUrl } from "../config/baseUrl";
 
-export class Login extends Component {
+export class ResetDefault extends Component {
 	state = {
 		username: "",
 		password: "",
+		open: false,
+		loading: false,
+		error: null,
+		redirect: false,
 	};
 
 	handleChange = (e) => {
@@ -17,25 +23,65 @@ export class Login extends Component {
 		});
 	};
 
-	handleLogin = (e) => {
+	handleReset = async (e) => {
 		e.preventDefault();
+		this.setState({
+			...this.state,
+			loading: true,
+		});
 		const { username, password } = this.state;
-		this.props.userLogin(username, password);
+		const url = `${baseUrl}/password/default`;
+		const body = { username, password };
+		await axios
+			.put(url, body)
+			.then(() => {
+				this.setState({
+					...this.state,
+
+					error: null,
+					loading: false,
+					redirect: true,
+				});
+			})
+			.catch((err) => {
+				this.setState({
+					...this.state,
+					open: true,
+					error: err.message,
+					loading: false,
+				});
+			});
+		setTimeout(() => {
+			this.setState({
+				...this.state,
+				open: false,
+			});
+		}, 3000);
 	};
 	render() {
 		const { auth } = this.props;
 		const { isAuthenticated } = auth;
+		const { error, loading, open, username, password, redirect } = this.state;
 		if (isAuthenticated) {
+			return <Redirect to="/" />;
+		}
+		if (redirect) {
 			return <Redirect to="/" />;
 		}
 		return (
 			<div className="grid-margin stretch-card">
 				<div className="card">
 					<div className="card-body">
-						<h4 className="card-title">Hello, let's log you in.</h4>
+						{error && !loading && open ? (
+							<Alert variant="danger" onClose={this.handleClose} dismissible>
+								<Alert.Heading>Oh snap!</Alert.Heading>
+								<p>Password not reset.</p>
+							</Alert>
+						) : null}
+						<h4 className="card-title">Hello, let's reset your password.</h4>
 						<p className="card-description">
 							{" "}
-							Login to your account to access services{" "}
+							Reset your password to access services{" "}
 						</p>
 						<form className="forms-sample">
 							<div className="form-group">
@@ -46,6 +92,7 @@ export class Login extends Component {
 									className="form-control"
 									id="exampleInputUsername1"
 									placeholder="Username"
+									value={username}
 									onChange={this.handleChange}
 								/>
 							</div>
@@ -57,20 +104,21 @@ export class Login extends Component {
 									className="form-control"
 									id="exampleInputPassword1"
 									placeholder="Password"
+									value={password}
 									onChange={this.handleChange}
 								/>
 							</div>
 							<button
 								type="submit"
 								className="btn btn-gradient-primary mr-2"
-								onClick={this.handleLogin}>
-								Login
+								onClick={this.handleReset}>
+								Reset Password
 							</button>
 							<div className="mt-4 font-weight-light">
 								{" "}
-								Didn't reset your default password?{" "}
-								<a href="/reset/default/password" className="text-primary">
-									Reset
+								Already reset your password?{" "}
+								<a href="/auth/login" className="text-primary">
+									Login
 								</a>
 							</div>
 						</form>
@@ -87,12 +135,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		userLogin: (username, password) => {
-			dispatch(userLogin(username, password));
-		},
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps)(ResetDefault);
