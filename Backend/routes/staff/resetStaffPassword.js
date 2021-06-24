@@ -5,9 +5,9 @@ const { password_staff } = process.env;
 
 const router = Router();
 
-const staffPasswordAPI = router.put("/", (req, res) => {
+const resetStaffPasswordAPI = router.put("/", (req, res) => {
 	try {
-		const { username, password } = req.body;
+		const { username } = req.body;
 		Users.findOne({
 			where: {
 				username,
@@ -20,15 +20,10 @@ const staffPasswordAPI = router.put("/", (req, res) => {
 							"We could not find a staff member with the username you provided.",
 					});
 				}
-				const valid = bcrypt.compareSync(password_staff, user.password);
-				if (!valid) {
-					return res.status(400).json({
-						error: "Default password was already changed.",
-					});
-				}
+
 				Users.update(
 					{
-						password: bcrypt.hashSync(password, 10),
+						password: bcrypt.hashSync(password_staff, 10),
 					},
 					{
 						where: {
@@ -38,7 +33,7 @@ const staffPasswordAPI = router.put("/", (req, res) => {
 				)
 					.then(() => {
 						return res.status(200).json({
-							success: "Default password was successfully changed.",
+							success: "Staff password was successfully changed.",
 						});
 					})
 					.catch((err) => {
@@ -60,5 +55,5 @@ const staffPasswordAPI = router.put("/", (req, res) => {
 });
 
 module.exports = {
-	staffPasswordAPI,
+	resetStaffPasswordAPI,
 };
