@@ -7,7 +7,6 @@ import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { allDepartments } from "../redux/departments/actions";
 import { addNewStaff } from "../redux/staff/actions";
-import { password } from "../config/password";
 
 export class AddStaff extends Component {
 	state = {
@@ -48,10 +47,8 @@ export class AddStaff extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
-
-		const staff = {
-			staff: true,
-		};
+		const { newstaff } = this.props;
+		const { error, loading } = newstaff;
 		const {
 			first_name,
 			last_name,
@@ -67,19 +64,24 @@ export class AddStaff extends Component {
 			username,
 			national_id,
 			phone_number,
-			department,
-			staff,
-			password
+			department
 		);
+
+		if (!error && !loading) {
+			this.setState({
+				...this.state,
+				first_name: "",
+				last_name: "",
+				username: "",
+				national_id: "",
+				phone_number: "",
+				department: "",
+				open: true,
+			});
+		}
 
 		this.setState({
 			...this.state,
-			first_name: "",
-			last_name: "",
-			username: "",
-			national_id: "",
-			phone_number: "",
-			department: "",
 			open: true,
 		});
 
@@ -221,12 +223,16 @@ export class AddStaff extends Component {
 										})}
 									</select>
 								</div>
-								<button
-									type="submit"
-									className="btn btn-gradient-primary mr-2"
-									onClick={this.handleSubmit}>
-									Add Staff
-								</button>
+								{loading ? (
+									<CircularProgress />
+								) : (
+									<button
+										type="submit"
+										className="btn btn-gradient-primary mr-2"
+										onClick={this.handleSubmit}>
+										Add Staff
+									</button>
+								)}
 							</form>
 						</div>
 					</div>

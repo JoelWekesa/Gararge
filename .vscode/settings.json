@@ -1,11 +1,17 @@
 {
-    "cSpell.words": [
-        "hstore",
-        "newstaff",
-        "operationalize",
-        "operationalized",
-        "pg",
-        "ppes",
-        "signin"
-    ]
+	"cSpell.words": [
+		"hstore",
+		"newstaff",
+		"operationalize",
+		"operationalized",
+		"passworddb",
+		"pg",
+		"ppes",
+		"resetcodes",
+		"signin",
+		"twilio",
+		"usernamedb",
+		"uuidv"
+	],
+	"better-comments.highlightPlainText": true
 }

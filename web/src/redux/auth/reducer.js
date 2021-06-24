@@ -1,5 +1,6 @@
 import * as Types from "./types";
 
+//? Login reducer
 const initialState = {
 	staff: {},
 	loading: false,
@@ -47,3 +48,42 @@ export const loginReducer = (state = initialState, action) => {
 			return state;
 	}
 };
+//? End of login reducer
+
+//** Password reset reducer */
+const startState = {
+	loading: false,
+	success: false,
+	error: null,
+};
+
+export const passwordResetReducer = (state = startState, action) => {
+	switch (action.type) {
+		case Types.START_RESET:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.RESET_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				success: true,
+				error: null,
+			};
+
+		case Types.RESET_FAIL:
+			return {
+				...state,
+				loading: false,
+				success: false,
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+//** End of password reset reducer */

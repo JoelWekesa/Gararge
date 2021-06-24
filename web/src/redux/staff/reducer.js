@@ -1,5 +1,7 @@
 import * as Types from "./types";
 
+//? Add staff
+
 const initialState = {
 	loading: false,
 	staff: {},
@@ -33,3 +35,44 @@ export const addStaffReducer = (state = initialState, action) => {
 			return state;
 	}
 };
+
+//? End of add staff
+
+//** All staff */
+
+const startState = {
+	loading: false,
+	users: [],
+	error: null,
+};
+
+export const allStaffReducer = (state = startState, action) => {
+	switch (action.type) {
+		case Types.START_GET:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.GET_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				users: action.payload,
+				error: null,
+			};
+
+		case Types.GET_FAIL:
+			return {
+				...state,
+				loading: false,
+				users: [],
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+//** End all staff */

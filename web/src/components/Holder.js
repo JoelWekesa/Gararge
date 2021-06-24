@@ -10,7 +10,8 @@ export class Holder extends Component {
 
 	render() {
 		const { auth } = this.props;
-		const { isAuthenticated, staff } = auth;
+		const { staff } = auth;
+		const { admin, super_admin } = staff.user;
 		return (
 			<div className="container-scroller">
 				<nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -51,46 +52,38 @@ export class Holder extends Component {
 									href="/"
 									data-toggle="dropdown"
 									aria-expanded="false">
-									{isAuthenticated ? (
-										<>
-											<div className="nav-profile-text">
-												<p
-													className="mb-1 text-black"
-													style={{ textTransform: "capitalize" }}>
-													{staff.user.first_name} {staff.user.last_name}
-												</p>
-											</div>
-										</>
-									) : null}
-								</a>
-								{isAuthenticated ? (
-									<div
-										className="dropdown-menu navbar-dropdown"
-										aria-labelledby="profileDropdown">
-										<a className="dropdown-item" href="/">
-											<i className="mdi mdi-cached mr-2 text-success"></i>{" "}
-											Activity Log{" "}
-										</a>
-										<div className="dropdown-divider"></div>
-										<a
-											className="dropdown-item"
-											href="/"
-											onClick={this.handleLogout}>
-											<i className="mdi mdi-logout mr-2 text-primary"></i>{" "}
-											Signout{" "}
-										</a>
+									<div className="nav-profile-text">
+										<p
+											className="mb-1 text-black"
+											style={{ textTransform: "capitalize" }}>
+											{staff.user.first_name} {staff.user.last_name}
+										</p>
 									</div>
-								) : null}
-							</li>
-							{isAuthenticated ? (
-								<li className="nav-item d-none d-lg-block full-screen-link">
-									<a href="/" className="nav-link">
-										<i
-											className="mdi mdi-fullscreen"
-											id="fullscreen-button"></i>
+								</a>
+
+								<div
+									className="dropdown-menu navbar-dropdown"
+									aria-labelledby="profileDropdown">
+									<a className="dropdown-item" href="/">
+										<i className="mdi mdi-cached mr-2 text-success"></i>{" "}
+										Activity Log{" "}
 									</a>
-								</li>
-							) : null}
+									<div className="dropdown-divider"></div>
+									<a
+										className="dropdown-item"
+										href="/"
+										onClick={this.handleLogout}>
+										<i className="mdi mdi-logout mr-2 text-primary"></i> Signout{" "}
+									</a>
+								</div>
+							</li>
+
+							<li className="nav-item d-none d-lg-block full-screen-link">
+								<a href="/" className="nav-link">
+									<i className="mdi mdi-fullscreen" id="fullscreen-button"></i>
+								</a>
+							</li>
+
 							<li className="nav-item dropdown">
 								<a
 									className="nav-link count-indicator dropdown-toggle"
@@ -255,52 +248,61 @@ export class Holder extends Component {
 									<i className="mdi mdi-home menu-icon"></i>
 								</a>
 							</li>
-							<li className="nav-item">
-								<a
-									className="nav-link"
-									data-toggle="collapse"
-									href="#ui-basic"
-									aria-expanded="false"
-									aria-controls="ui-basic">
-									<span className="menu-title">Staff</span>
-									<i className="menu-arrow"></i>
-									<i className="mdi mdi-account-multiple menu-icon"></i>
-								</a>
-								<div className="collapse" id="ui-basic">
-									<ul className="nav flex-column sub-menu">
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/staff/add">
-												Add new staff
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/staff/add">
-												Add admin
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/staff/add">
-												Reset staff password
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/staff/add">
-												Remove staff
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/staff/add">
-												Remove admin
-											</a>
-										</li>
-									</ul>
-								</div>
-							</li>
+							{admin || super_admin ? (
+								<li className="nav-item">
+									<a
+										className="nav-link"
+										data-toggle="collapse"
+										href="#ui-basic"
+										aria-expanded="false"
+										aria-controls="ui-basic">
+										<span className="menu-title">Staff</span>
+										<i className="menu-arrow"></i>
+										<i className="mdi mdi-account-multiple menu-icon"></i>
+									</a>
+									<div className="collapse" id="ui-basic">
+										<ul className="nav flex-column sub-menu">
+											{admin || super_admin ? (
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/staff/add">
+														Add new staff
+													</a>
+												</li>
+											) : null}
+
+											{super_admin ? (
+												<>
+													<li className="nav-item">
+														{" "}
+														<a className="nav-link" href="/staff/add">
+															Add admin
+														</a>
+													</li>
+													<li className="nav-item">
+														{" "}
+														<a className="nav-link" href="/reset/password">
+															Reset staff password
+														</a>
+													</li>
+													<li className="nav-item">
+														{" "}
+														<a className="nav-link" href="/staff/add">
+															Remove staff
+														</a>
+													</li>
+													<li className="nav-item">
+														{" "}
+														<a className="nav-link" href="/staff/add">
+															Remove admin
+														</a>
+													</li>{" "}
+												</>
+											) : null}
+										</ul>
+									</div>
+								</li>
+							) : null}
 							<li className="nav-item">
 								<a className="nav-link" href="pages/icons/mdi.html">
 									<span className="menu-title">Icons</span>

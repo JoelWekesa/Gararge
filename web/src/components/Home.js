@@ -1,25 +1,11 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { baseUrl } from "../config/baseUrl";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { getAllStaff } from "../redux/staff/actions";
 
 export class Home extends Component {
-	state = {
-		test: "Hello",
-	};
-
 	componentDidMount = () => {
-		const url = `${baseUrl}/staff/all`;
-		axios
-			.get(url)
-			.then((res) => {
-				console.log(res.data);
-			})
-			.catch((err) => {
-				console.log(err.message);
-			});
-		console.log(url);
+		this.props.getAllStaff();
 	};
 
 	handleChange = (e) => {
@@ -517,4 +503,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getAllStaff: () => dispatch(getAllStaff()),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

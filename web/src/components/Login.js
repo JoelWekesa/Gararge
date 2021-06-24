@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { CircularProgress } from "@material-ui/core";
+import Alert from "react-bootstrap/Alert";
 import { userLogin } from "../redux/auth/actions";
 
 export class Login extends Component {
 	state = {
 		username: "",
 		password: "",
+		open: false,
 	};
 
 	handleChange = (e) => {
@@ -21,62 +24,80 @@ export class Login extends Component {
 		e.preventDefault();
 		const { username, password } = this.state;
 		this.props.userLogin(username, password);
+		this.setState({
+			...this.state,
+			open: true,
+		});
+
+		setTimeout(() => {
+			this.setState({
+				...this.state,
+				open: false,
+			});
+		}, 3000);
 	};
 	render() {
 		const { auth } = this.props;
-		const { isAuthenticated } = auth;
+		const { open } = this.state;
+		const { isAuthenticated, error, loading } = auth;
 		if (isAuthenticated) {
 			return <Redirect to="/" />;
 		}
 		return (
-			<div className="grid-margin stretch-card">
-				<div className="card">
-					<div className="card-body">
-						<h4 className="card-title">Hello, let's log you in.</h4>
-						<p className="card-description">
-							{" "}
-							Login to your account to access services{" "}
-						</p>
-						<form className="forms-sample">
-							<div className="form-group">
-								<label htmlFor="exampleInputUsername1">Username</label>
-								<input
-									name="username"
-									type="text"
-									className="form-control"
-									id="exampleInputUsername1"
-									placeholder="Username"
-									onChange={this.handleChange}
-								/>
-							</div>
-							<div className="form-group">
-								<label htmlFor="exampleInputPassword1">Password</label>
-								<input
-									name="password"
-									type="password"
-									className="form-control"
-									id="exampleInputPassword1"
-									placeholder="Password"
-									onChange={this.handleChange}
-								/>
-							</div>
+			<>
+				{error && !loading && open ? (
+					<Alert variant="danger" onClose={this.handleClose} dismissible>
+						<Alert.Heading>Oh snap!</Alert.Heading>
+						<p>Login failed.</p>
+					</Alert>
+				) : null}
+				<h4>Hello! let's get started.</h4>
+				<h6 className="font-weight-light">Sign in to continue.</h6>
+				<form className="pt-3">
+					<div className="form-group">
+						<label htmlFor="exampleInputUsername1">Username</label>
+						<input
+							name="username"
+							type="text"
+							className="form-control"
+							id="exampleInputUsername1"
+							placeholder="Username"
+							onChange={this.handleChange}
+						/>
+					</div>
+					<div className="form-group">
+						<label htmlFor="exampleInputPassword1">Password</label>
+						<input
+							name="password"
+							type="password"
+							className="form-control"
+							id="exampleInputPassword1"
+							placeholder="Password"
+							onChange={this.handleChange}
+						/>
+					</div>
+					<div className="mt-3">
+						{loading ? (
+							<CircularProgress />
+						) : (
 							<button
 								type="submit"
 								className="btn btn-gradient-primary mr-2"
 								onClick={this.handleLogin}>
 								Login
 							</button>
-							<div className="mt-4 font-weight-light">
-								{" "}
-								Didn't reset your default password?{" "}
-								<a href="/reset/default/password" className="text-primary">
-									Reset
-								</a>
-							</div>
-						</form>
+						)}
 					</div>
-				</div>
-			</div>
+
+					<div className="mt-4 font-weight-light">
+						{" "}
+						Didn't reset your default password?{" "}
+						<a href="/reset/default/password" className="text-primary">
+							Reset
+						</a>
+					</div>
+				</form>
+			</>
 		);
 	}
 }
