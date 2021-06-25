@@ -47,8 +47,6 @@ export class AddStaff extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
-		const { newstaff } = this.props;
-		const { error, loading } = newstaff;
 		const {
 			first_name,
 			last_name,
@@ -67,21 +65,14 @@ export class AddStaff extends Component {
 			department
 		);
 
-		if (!error && !loading) {
-			this.setState({
-				...this.state,
-				first_name: "",
-				last_name: "",
-				username: "",
-				national_id: "",
-				phone_number: "",
-				department: "",
-				open: true,
-			});
-		}
-
 		this.setState({
 			...this.state,
+			first_name: "",
+			last_name: "",
+			username: "",
+			national_id: "",
+			phone_number: "",
+			department: "",
 			open: true,
 		});
 
@@ -90,7 +81,7 @@ export class AddStaff extends Component {
 				...this.state,
 				open: false,
 			});
-		}, 3000);
+		}, 5000);
 	};
 	render() {
 		const {

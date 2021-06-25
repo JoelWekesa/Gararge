@@ -50,7 +50,7 @@ const addStaffAPI = router.post("/", (req, res) => {
 							client.messages
 								.create({
 									body: `Your reset code is ${code}`,
-									from: "+13372431053",
+									from: "+18593053864",
 									to: `+254${user.phone_number}`,
 								})
 								.then(() => {
