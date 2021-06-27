@@ -23,6 +23,7 @@ const authFail = (message) => {
 		payload: message,
 	};
 };
+
 //? End of login
 
 //! Logout

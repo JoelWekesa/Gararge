@@ -8,20 +8,20 @@ export class App extends Component {
 	render() {
 		const { auth } = this.props;
 		const { isAuthenticated } = auth;
-		if (!isAuthenticated) {
+		if (isAuthenticated) {
 			return (
 				<div>
-					<AuthHolder>
+					<Holder>
 						<Routes />
-					</AuthHolder>
+					</Holder>
 				</div>
 			);
 		}
 		return (
 			<div>
-				<Holder>
+				<AuthHolder>
 					<Routes />
-				</Holder>
+				</AuthHolder>
 			</div>
 		);
 	}

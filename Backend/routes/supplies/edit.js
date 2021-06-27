@@ -7,7 +7,7 @@ const router = Router();
 
 const editSuppliesAPI = router.put("/:id", async (req, res) => {
 	try {
-		const { name, description, price, quantity, category } = req.body;
+		const { description, price, quantity, category } = req.body;
 		const { id } = req.params;
 		const token = req.headers["x-access-token"];
 		await jwt.verify(token, secrets, (err, decoded) => {
@@ -41,7 +41,6 @@ const editSuppliesAPI = router.put("/:id", async (req, res) => {
 
 					Supplies.update(
 						{
-							name: name ? name : supply.name,
 							description: description ? description : supply.description,
 							price: price ? price : supply.price,
 							quantity: quantity

@@ -4,6 +4,8 @@ import { departmentsReducer } from "./departments/reducer";
 import { addStaffReducer } from "./staff/reducer";
 import { passwordResetReducer } from "./auth/reducer";
 import { allStaffReducer } from "./staff/reducer";
+import { addSupplyReducer } from "./supplies/reducer";
+import { categoriesReducer } from "./categories/reducer";
 
 export const rootReducer = combineReducers({
 	auth: loginReducer,
@@ -11,4 +13,6 @@ export const rootReducer = combineReducers({
 	newstaff: addStaffReducer,
 	password: passwordResetReducer,
 	staff: allStaffReducer,
+	newsupply: addSupplyReducer,
+	categories: categoriesReducer,
 });

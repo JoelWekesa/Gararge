@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
+const QRCode = require("qrcode");
 const { Supplies } = require("../../models/Supplies");
 const { secrets } = process.env;
 
@@ -10,7 +11,7 @@ const addSuppliesAPI = router.post("/", async (req, res) => {
 		const token = req.headers["x-access-token"];
 		const { name, description, price, quantity, category } = req.body;
 
-		await jwt.verify(token, secrets, (err, decoded) => {
+		await jwt.verify(token, secrets, async (err, decoded) => {
 			if (err) {
 				return res.status(403).json({
 					error: err.message,
@@ -30,27 +31,36 @@ const addSuppliesAPI = router.post("/", async (req, res) => {
 			}
 
 			const { id } = decoded;
+			const segs = [{ data: `${name}` }];
 
-			Supplies.create({
-				name,
-				description,
-				price,
-				quantity,
-				category,
-				staff: id,
-				available: quantity,
-			})
-				.then((supply) => {
-					return res.status(200).json({
-						Success: `Successfully added a supply.`,
-						supply,
-					});
-				})
-				.catch((err) => {
+			await QRCode.toDataURL(segs, async (err, url) => {
+				if (err) {
 					return res.status(400).json({
 						error: err.message,
 					});
-				});
+				}
+				await Supplies.create({
+					name,
+					description,
+					price,
+					quantity,
+					category,
+					staff: id,
+					available: quantity,
+					qrcode: url,
+				})
+					.then((supply) => {
+						return res.status(200).json({
+							Success: `Successfully added a supply.`,
+							supply,
+						});
+					})
+					.catch((err) => {
+						return res.status(400).json({
+							error: err.message,
+						});
+					});
+			});
 		});
 	} catch (err) {
 		return res.status(500).json({

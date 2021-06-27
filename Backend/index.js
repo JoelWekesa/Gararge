@@ -45,6 +45,14 @@ const { addToolsAPI } = require("./routes/Tools/add");
 const { editToolsAPI } = require("./routes/Tools/edit");
 const { assignToolsAPI } = require("./routes/Tools/assign");
 
+//? Supplies Categories API
+const {
+	AddSuppliesCategoriesAPI,
+} = require("./routes/supplies_categories/add");
+const {
+	getAllSuppliesCategoriesAPI,
+} = require("./routes/supplies_categories/getAll");
+
 //? Departments API
 const { allDepartmentsAPI } = require("./routes/departments/all");
 
@@ -83,6 +91,8 @@ app.use("/api/tools/add", [superAdmin], addToolsAPI);
 app.use("/api/tools/edit", [superAdmin], editToolsAPI);
 app.use("/api/tools/assign", [admin], assignToolsAPI);
 app.use("/api/departments/all", [admin], allDepartmentsAPI);
+app.use("/api/suppliescategories/add", [admin], AddSuppliesCategoriesAPI);
+app.use("/api/suppliescategories/all", [admin], getAllSuppliesCategoriesAPI);
 
 const PORT = process.env.PORT || 5000;
 

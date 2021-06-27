@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
+import Loader from "./Loader";
 import Alert from "react-bootstrap/Alert";
 import { userLogin } from "../redux/auth/actions";
 
@@ -24,6 +24,7 @@ export class Login extends Component {
 		e.preventDefault();
 		const { username, password } = this.state;
 		this.props.userLogin(username, password);
+
 		this.setState({
 			...this.state,
 			open: true,
@@ -41,7 +42,7 @@ export class Login extends Component {
 		const { open } = this.state;
 		const { isAuthenticated, error, loading } = auth;
 		if (isAuthenticated) {
-			return <Redirect to="/" />;
+			return <Loader />;
 		}
 		return (
 			<>
@@ -96,7 +97,7 @@ export class Login extends Component {
 							Reset
 						</a>
 					</div>
-				</form>
+				</form>{" "}
 			</>
 		);
 	}

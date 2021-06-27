@@ -56,7 +56,7 @@ export class Holder extends Component {
 										<p
 											className="mb-1 text-black"
 											style={{ textTransform: "capitalize" }}>
-											{staff.user.first_name} {staff.user.last_name}
+											Hello {staff.user.first_name} {staff.user.last_name}
 										</p>
 									</div>
 								</a>
@@ -221,7 +221,10 @@ export class Holder extends Component {
 								</div>
 							</li>
 							<li className="nav-item nav-logout d-none d-lg-block">
-								<a className="nav-link" href="/">
+								<a
+									className="nav-link"
+									href="/auth/login"
+									onClick={this.handleLogout}>
 									<i className="mdi mdi-power"></i>
 								</a>
 							</li>
@@ -299,6 +302,38 @@ export class Holder extends Component {
 													</li>{" "}
 												</>
 											) : null}
+										</ul>
+									</div>
+								</li>
+							) : null}
+							{admin || super_admin ? (
+								<li className="nav-item">
+									<a
+										className="nav-link"
+										data-toggle="collapse"
+										href="#supplies"
+										aria-expanded="false"
+										aria-controls="supplies">
+										<span className="menu-title">Supplies</span>
+										<i className="menu-arrow"></i>
+										<i className="mdi mdi-cart-plus menu-icon"></i>
+									</a>
+									<div className="collapse" id="supplies">
+										<ul className="nav flex-column sub-menu">
+											<li className="nav-item">
+												{" "}
+												<a className="nav-link" href="/supply/add">
+													{" "}
+													New Supply{" "}
+												</a>
+											</li>
+											<li className="nav-item">
+												{" "}
+												<a className="nav-link" href="/supply/edit">
+													{" "}
+													Edit Supply{" "}
+												</a>
+											</li>
 										</ul>
 									</div>
 								</li>

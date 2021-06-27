@@ -2,13 +2,17 @@
 	"cSpell.words": [
 		"hstore",
 		"newstaff",
+		"newsupply",
 		"operationalize",
 		"operationalized",
 		"passworddb",
 		"pg",
 		"ppes",
+		"qrcode",
 		"resetcodes",
+		"segs",
 		"signin",
+		"suppliescategories",
 		"twilio",
 		"usernamedb",
 		"uuidv"

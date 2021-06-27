@@ -23,6 +23,9 @@ const Supplies = db.define("Supplies", {
 	category: {
 		type: DataTypes.BIGINT,
 	},
+	qrcode: {
+		type: DataTypes.TEXT,
+	},
 });
 
 module.exports = {
