@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"garage",
 		"hstore",
 		"newstaff",
 		"newsupply",
@@ -7,6 +8,7 @@
 		"operationalized",
 		"passworddb",
 		"pg",
+		"postgres",
 		"ppes",
 		"qrcode",
 		"resetcodes",
@@ -17,5 +19,8 @@
 		"usernamedb",
 		"uuidv"
 	],
-	"better-comments.highlightPlainText": true
+	"better-comments.highlightPlainText": true,
+	"cSpell.ignoreWords": [
+		"garage"
+	]
 }
