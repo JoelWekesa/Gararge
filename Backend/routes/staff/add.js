@@ -1,13 +1,10 @@
 const { Router } = require("express");
+const dotenv = require("dotenv");
+dotenv.config();
 var bcrypt = require("bcryptjs");
 const { Users } = require("../../models/Staff");
 const { Resetcodes } = require("../../models/ResetCodes");
-const { random } = require("../../config/random");
-const {
-	TWILIO_TOKEN,
-	TWILIO_ACCOUNT_SID,
-	password_staff,
-} = require("../../files");
+const { TWILIO_TOKEN, TWILIO_ACCOUNT_SID, password_staff } = process.env;
 
 const router = Router();
 const client = require("twilio")(TWILIO_ACCOUNT_SID, TWILIO_TOKEN);
@@ -30,6 +27,7 @@ const addStaffAPI = router.post("/", (req, res) => {
 			phone_number &&
 			department
 		) {
+			const code = Math.floor(1000000 * Math.random()).toString(); //? Bcrypt only encrypts strings.
 			Users.create({
 				first_name,
 				last_name,
@@ -41,7 +39,6 @@ const addStaffAPI = router.post("/", (req, res) => {
 				password: bcrypt.hashSync(password_staff, 10),
 			})
 				.then(async (user) => {
-					const code = random(100000, 999999).toString(); //? Bcrypt only encrypts strings.
 					await Resetcodes.create({
 						user: user.id,
 						code: bcrypt.hashSync(code, 10),
@@ -50,7 +47,7 @@ const addStaffAPI = router.post("/", (req, res) => {
 							client.messages
 								.create({
 									body: `Your reset code is ${code}`,
-									from: "+18593053864",
+									from: "+13372431053",
 									to: `+254${user.phone_number}`,
 								})
 								.then(() => {
