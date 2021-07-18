@@ -3,11 +3,7 @@ const cors = require("cors");
 const { json, urlencoded } = require("express");
 
 //? Staff APIs
-const { addStaffAPI } = require("./routes/staff/add");
-const { allStaffAPI } = require("./routes/staff/all");
-const { removeStaffAPI } = require("./routes/staff/remove");
-const { initialReset } = require("./routes/staff/resetCode");
-const { resetStaffPasswordAPI } = require("./routes/staff/resetStaffPassword");
+const staffAPI = require("./routes/staff/staff");
 
 //? Admin APIs
 const { addAdminAPI } = require("./routes/admin/add");
@@ -69,11 +65,12 @@ app.use(urlencoded({ extended: false }));
 
 app.use("/api/staff/add", [admin], addStaffAPI);
 app.use("/api/staff/remove", [superAdmin], removeStaffAPI);
+
+app.use("/api/staff", staffAPI);
+
 app.use("/api/admin/add", [superAdmin], addAdminAPI);
 app.use("/api/admin/remove", [superAdmin], removeAdminAPI);
 app.use("/api/auth/login", loginAPI);
-app.use("/api/password/default", initialReset);
-app.use("/api/password/reset", [superAdmin], resetStaffPasswordAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
 app.use("/api/supplies/edit", [admin], editSuppliesAPI);
 app.use("/api/make/sale", [admin], makeSaleAPI);
