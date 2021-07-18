@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { secrets, password_staff } = process.env;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { Users } = require("../../models/Staff");
+const { Users } = require("../models/Staff");
 
 const router = Router();
 

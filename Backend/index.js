@@ -2,14 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const { json, urlencoded } = require("express");
 
-//? Staff APIs
+//? APIs
 const staffAPI = require("./routes/staff");
-
-//? Admin APIs
 const adminAPI = require("./routes/admin");
-
-//? Login API
-const loginAPI = require("./routes/auth/login");
+const loginAPI = require("./routes/login");
+const machinesAPI = require("./routes/machines");
+const departmentsAPI = require("./routes/departments");
 
 //? Supplies APIs
 const { addSuppliesAPI } = require("./routes/supplies/add");
@@ -17,9 +15,6 @@ const { editSuppliesAPI } = require("./routes/supplies/edit");
 
 //? Sales APIs
 const { makeSaleAPI } = require("./routes/sales/sales");
-
-//? Machines, Tools, and PPEs APIs
-const machinesAPI = require("./routes/machines");
 
 //? PPEs API
 const { getAllPPEs } = require("./routes/PPEs/all");
@@ -40,9 +35,6 @@ const {
 const {
 	getAllSuppliesCategoriesAPI,
 } = require("./routes/supplies_categories/getAll");
-
-//? Departments API
-const departmentsAPI = require("./routes/departments");
 
 //? Staff and admin middleware
 const { staff } = require("./middleware/staff/check");
