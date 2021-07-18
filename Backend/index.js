@@ -9,7 +9,7 @@ const staffAPI = require("./routes/staff/staff");
 const adminAPI = require("./routes/admin/admin");
 
 //? Login API
-const { loginAPI } = require("./routes/auth/login");
+const loginAPI  = require("./routes/auth/login");
 
 //? Supplies APIs
 const { addSuppliesAPI } = require("./routes/supplies/add");
@@ -64,7 +64,7 @@ app.use(urlencoded({ extended: false }));
 
 app.use("/api/staff", staffAPI);
 app.use("/api/admin", adminAPI);
-app.use("/api/auth/login", loginAPI);
+app.use("/api/auth", loginAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
 app.use("/api/supplies/edit", [admin], editSuppliesAPI);
 app.use("/api/make/sale", [admin], makeSaleAPI);

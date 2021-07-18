@@ -6,7 +6,7 @@ const { Users } = require("../../models/Staff");
 
 const router = Router();
 
-const loginAPI = router.post("/", (req, res) => {
+router.post("/login", (req, res) => {
 	try {
 		const { username, password } = req.body;
 		Users.findOne({
@@ -56,6 +56,4 @@ const loginAPI = router.post("/", (req, res) => {
 	}
 });
 
-module.exports = {
-	loginAPI,
-};
+module.exports = router
