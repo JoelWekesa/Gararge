@@ -3,13 +3,13 @@ const cors = require("cors");
 const { json, urlencoded } = require("express");
 
 //? Staff APIs
-const staffAPI = require("./routes/staff/staff");
+const staffAPI = require("./routes/staff");
 
 //? Admin APIs
-const adminAPI = require("./routes/admin/admin");
+const adminAPI = require("./routes/admin");
 
 //? Login API
-const loginAPI  = require("./routes/auth/login");
+const loginAPI = require("./routes/auth/login");
 
 //? Supplies APIs
 const { addSuppliesAPI } = require("./routes/supplies/add");
@@ -19,7 +19,7 @@ const { editSuppliesAPI } = require("./routes/supplies/edit");
 const { makeSaleAPI } = require("./routes/sales/sales");
 
 //? Machines, Tools, and PPEs APIs
-const machinesAPI = require("./routes/machines/machines")
+const machinesAPI = require("./routes/machines");
 
 //? PPEs API
 const { getAllPPEs } = require("./routes/PPEs/all");
@@ -42,7 +42,7 @@ const {
 } = require("./routes/supplies_categories/getAll");
 
 //? Departments API
-const { allDepartmentsAPI } = require("./routes/departments/all");
+const departmentsAPI = require("./routes/departments");
 
 //? Staff and admin middleware
 const { staff } = require("./middleware/staff/check");
@@ -58,10 +58,11 @@ app.use(urlencoded({ extended: false }));
 app.use("/api/staff", staffAPI);
 app.use("/api/admin", adminAPI);
 app.use("/api/auth", loginAPI);
+app.use("/api/machines", machinesAPI);
+app.use("/api/departments", departmentsAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
 app.use("/api/supplies/edit", [admin], editSuppliesAPI);
 app.use("/api/make/sale", [admin], makeSaleAPI);
-app.use("/api/machines", machinesAPI);
 app.use("/api/ppes/all", [admin], getAllPPEs);
 app.use("/api/ppes/add", [admin], addPPEsAPI);
 app.use("/api/ppes/edit", [admin], editPPEsAPI);
@@ -70,7 +71,6 @@ app.use("/api/tools/all", [admin], getAllToolsAPI);
 app.use("/api/tools/add", [superAdmin], addToolsAPI);
 app.use("/api/tools/edit", [superAdmin], editToolsAPI);
 app.use("/api/tools/assign", [admin], assignToolsAPI);
-app.use("/api/departments/all", [admin], allDepartmentsAPI);
 app.use("/api/suppliescategories/add", [admin], AddSuppliesCategoriesAPI);
 app.use("/api/suppliescategories/all", [admin], getAllSuppliesCategoriesAPI);
 

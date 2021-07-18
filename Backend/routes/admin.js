@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const { Users } = require("../../models/Staff");
-const { superAdmin } = require("../../middleware/super_admin/check")
+const { Users } = require("../models/Staff");
+const { superAdmin } = require("../middleware/super_admin/check")
 
 const router = Router();
 

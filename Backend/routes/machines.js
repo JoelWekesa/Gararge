@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const { Machines } = require("../../models/Machines");
-const { superAdmin} = require("../../middleware/super_admin/check")
-const { admin } = require("../../middleware/admin/check")
+const { Machines } = require("../models/Machines");
+const { superAdmin} = require("../middleware/super_admin/check")
+const { admin } = require("../middleware/admin/check")
 
 const router = Router();
 

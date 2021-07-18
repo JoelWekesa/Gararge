@@ -2,9 +2,9 @@ const { Router } = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 var bcrypt = require("bcryptjs");
-const { Users } = require("../../models/Staff");
-const { Resetcodes } = require("../../models/ResetCodes");
-const { admin } = require("../../middleware/admin/check");
+const { Users } = require("../models/Staff");
+const { Resetcodes } = require("../models/ResetCodes");
+const { admin } = require("../middleware/admin/check");
 const { TWILIO_TOKEN, TWILIO_ACCOUNT_SID, password_staff } = process.env;
 
 const router = Router();
