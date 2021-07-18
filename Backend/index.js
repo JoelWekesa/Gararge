@@ -19,14 +19,7 @@ const { editSuppliesAPI } = require("./routes/supplies/edit");
 const { makeSaleAPI } = require("./routes/sales/sales");
 
 //? Machines, Tools, and PPEs APIs
-const { addMachinesAPI } = require("./routes/machines/add");
-const { getAllMachinesAPI } = require("./routes/machines/all");
-
-const {
-	operationalizeMachineAPI,
-} = require("./routes/machines/operationalize");
-
-const { deprecateMachineAPI } = require("./routes/machines/deprecate");
+const machinesAPI = require("./routes/machines/machines")
 
 //? PPEs API
 const { getAllPPEs } = require("./routes/PPEs/all");
@@ -68,10 +61,7 @@ app.use("/api/auth", loginAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
 app.use("/api/supplies/edit", [admin], editSuppliesAPI);
 app.use("/api/make/sale", [admin], makeSaleAPI);
-app.use("/api/machines/all", [staff], getAllMachinesAPI);
-app.use("/api/machine/add", [admin], addMachinesAPI);
-app.use("/api/machine/deprecate", [superAdmin], deprecateMachineAPI);
-app.use("/api/machine/operationalize", [superAdmin], operationalizeMachineAPI);
+app.use("/api/machines", machinesAPI);
 app.use("/api/ppes/all", [admin], getAllPPEs);
 app.use("/api/ppes/add", [admin], addPPEsAPI);
 app.use("/api/ppes/edit", [admin], editPPEsAPI);

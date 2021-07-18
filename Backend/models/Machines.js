@@ -8,14 +8,8 @@ const Machines = db.define("Machines", {
 	description: {
 		type: DataTypes.TEXT,
 	},
-	commissioned: {
-		type: DataTypes.BOOLEAN,
-	},
-	in_operation: {
-		type: DataTypes.BOOLEAN,
-	},
-	deprecated: {
-		type: DataTypes.BOOLEAN,
+	status: {
+		type: DataTypes.STRING,
 	},
 });
 
