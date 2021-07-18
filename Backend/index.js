@@ -6,8 +6,7 @@ const { json, urlencoded } = require("express");
 const staffAPI = require("./routes/staff/staff");
 
 //? Admin APIs
-const { addAdminAPI } = require("./routes/admin/add");
-const { removeAdminAPI } = require("./routes/admin/remove");
+const adminAPI = require("./routes/admin/admin");
 
 //? Login API
 const { loginAPI } = require("./routes/auth/login");
@@ -63,13 +62,8 @@ app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-app.use("/api/staff/add", [admin], addStaffAPI);
-app.use("/api/staff/remove", [superAdmin], removeStaffAPI);
-
 app.use("/api/staff", staffAPI);
-
-app.use("/api/admin/add", [superAdmin], addAdminAPI);
-app.use("/api/admin/remove", [superAdmin], removeAdminAPI);
+app.use("/api/admin", adminAPI);
 app.use("/api/auth/login", loginAPI);
 app.use("/api/supplies/add", [admin], addSuppliesAPI);
 app.use("/api/supplies/edit", [admin], editSuppliesAPI);
