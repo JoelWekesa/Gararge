@@ -1,12 +1,33 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
-const { Sales } = require("../../models/Sales");
-const { Supplies } = require("../../models/Supplies");
+const { Sales } = require("../models/Sales");
+const { Supplies } = require("../models/Supplies");
 const { secrets } = process.env;
+const { admin } = require("../middleware/admin/check");
 
 const router = Router();
 
-const makeSaleAPI = router.post("/:id", async (req, res) => {
+//? Get all sales
+
+router.get("/all", [admin], async (req, res) => {
+	try {
+		Sales.findAndCountAll({ order: [["id", "DESC"]] })
+			.then((sales) => {
+				return res
+					.status(200)
+					.json({ Success: "Successfully fetched all sales", sales });
+			})
+			.catch((err) => {
+				return res.status(500).json({ message: err.message });
+			});
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
+	}
+});
+
+//? Make a sale
+
+router.post("/add/:id", [admin], async (req, res) => {
 	try {
 		let available = 0;
 		const { id } = req.params;
@@ -14,25 +35,25 @@ const makeSaleAPI = router.post("/:id", async (req, res) => {
 		const { quantity, price } = req.body;
 		if (!quantity || isNaN(quantity) || parseInt(quantity) === 0) {
 			return res.status(400).json({
-				error: "Please input correct sale quantity.",
+				message: "Please input correct sale quantity.",
 			});
 		}
 		if (isNaN(id)) {
 			return res.status(400).json({
-				error: "Invalid ID format.",
+				message: "Invalid ID format.",
 			});
 		}
 		await Supplies.findByPk(id)
 			.then(async (supply) => {
 				if (!supply) {
 					return res.status(404).json({
-						error: "The item you queried does not exist",
+						message: "The item you queried does not exist",
 					});
 				}
 
 				if (parseInt(quantity) > parseInt(supply.available)) {
 					return res.status(400).json({
-						error:
+						message:
 							"The requested amount for the sale exceeds the number of supplies in stock.",
 					});
 				}
@@ -42,7 +63,7 @@ const makeSaleAPI = router.post("/:id", async (req, res) => {
 				await jwt.verify(token, secrets, async (err, decode) => {
 					if (err) {
 						return res.status(403).json({
-							error: err.message,
+							message: err.message,
 						});
 					}
 
@@ -72,29 +93,27 @@ const makeSaleAPI = router.post("/:id", async (req, res) => {
 								})
 								.catch((err) => {
 									return res.status(400).json({
-										error: err.message,
+										message: err.message,
 									});
 								});
 						})
 						.catch((err) => {
 							return res.status(400).json({
-								error: err.message,
+								message: err.message,
 							});
 						});
 				});
 			})
 			.catch((err) => {
 				return res.status(404).json({
-					error: err.message,
+					message: err.message,
 				});
 			});
 	} catch (err) {
 		return res.status(500).json({
-			error: err.message,
+			message: err.message,
 		});
 	}
 });
 
-module.exports = {
-	makeSaleAPI,
-};
+module.exports = router;

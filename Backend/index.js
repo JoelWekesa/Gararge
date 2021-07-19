@@ -8,38 +8,12 @@ const adminAPI = require("./routes/admin");
 const loginAPI = require("./routes/login");
 const machinesAPI = require("./routes/machines");
 const departmentsAPI = require("./routes/departments");
+const categoriesAPI = require("./routes/categories");
+const suppliesAPI = require("./routes/supplies")
+const salesAPI = require("./routes/sales");
+const toolsAPI = require("./routes/tools");
+const ppeAPI = require("./routes/ppes")
 
-//? Supplies APIs
-const { addSuppliesAPI } = require("./routes/supplies/add");
-const { editSuppliesAPI } = require("./routes/supplies/edit");
-
-//? Sales APIs
-const { makeSaleAPI } = require("./routes/sales/sales");
-
-//? PPEs API
-const { getAllPPEs } = require("./routes/PPEs/all");
-const { addPPEsAPI } = require("./routes/PPEs/add");
-const { editPPEsAPI } = require("./routes/PPEs/edit");
-const { assignPPEsAPI } = require("./routes/PPEs/assign");
-
-//? Tools API
-const { getAllToolsAPI } = require("./routes/Tools/all");
-const { addToolsAPI } = require("./routes/Tools/add");
-const { editToolsAPI } = require("./routes/Tools/edit");
-const { assignToolsAPI } = require("./routes/Tools/assign");
-
-//? Supplies Categories API
-const {
-	AddSuppliesCategoriesAPI,
-} = require("./routes/supplies_categories/add");
-const {
-	getAllSuppliesCategoriesAPI,
-} = require("./routes/supplies_categories/getAll");
-
-//? Staff and admin middleware
-const { staff } = require("./middleware/staff/check");
-const { admin } = require("./middleware/admin/check");
-const { superAdmin } = require("./middleware/super_admin/check");
 
 const app = express();
 
@@ -52,19 +26,12 @@ app.use("/api/admin", adminAPI);
 app.use("/api/auth", loginAPI);
 app.use("/api/machines", machinesAPI);
 app.use("/api/departments", departmentsAPI);
-app.use("/api/supplies/add", [admin], addSuppliesAPI);
-app.use("/api/supplies/edit", [admin], editSuppliesAPI);
-app.use("/api/make/sale", [admin], makeSaleAPI);
-app.use("/api/ppes/all", [admin], getAllPPEs);
-app.use("/api/ppes/add", [admin], addPPEsAPI);
-app.use("/api/ppes/edit", [admin], editPPEsAPI);
-app.use("/api/ppes/assign", [admin], assignPPEsAPI);
-app.use("/api/tools/all", [admin], getAllToolsAPI);
-app.use("/api/tools/add", [superAdmin], addToolsAPI);
-app.use("/api/tools/edit", [superAdmin], editToolsAPI);
-app.use("/api/tools/assign", [admin], assignToolsAPI);
-app.use("/api/suppliescategories/add", [admin], AddSuppliesCategoriesAPI);
-app.use("/api/suppliescategories/all", [admin], getAllSuppliesCategoriesAPI);
+app.use("/api/supplies", suppliesAPI);
+app.use("/api/sales", salesAPI);
+app.use("/api/tools", toolsAPI);
+app.use("/api/categories", categoriesAPI);
+app.use("/api/ppes", ppeAPI);
+
 
 const PORT = process.env.PORT || 5000;
 

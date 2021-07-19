@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { db } = require("../db/db");
 
-const Supplies_categories = db.define("Supplies_categories", {
+const Categories = db.define("Categories", {
 	name: {
 		type: DataTypes.STRING,
 	},
@@ -11,5 +11,5 @@ const Supplies_categories = db.define("Supplies_categories", {
 });
 
 module.exports = {
-	Supplies_categories,
+	Categories,
 };

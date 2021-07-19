@@ -8,10 +8,10 @@ const PPEs = db.define("PPEs", {
 	description: {
 		type: DataTypes.TEXT,
 	},
-	quantity: {
+	available: {
 		type: DataTypes.BIGINT,
 	},
-	available: {
+	staff: {
 		type: DataTypes.BIGINT,
 	},
 });

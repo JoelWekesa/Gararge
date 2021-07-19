@@ -8,17 +8,14 @@ const Tools = db.define("Tools", {
 	description: {
 		type: DataTypes.TEXT,
 	},
-	quantity: {
-		type: DataTypes.BIGINT,
-	},
 	available: {
 		type: DataTypes.BIGINT,
 	},
-	in_operation: {
-		type: DataTypes.BOOLEAN,
+	status: {
+		type: DataTypes.STRING,
 	},
-	deprecated: {
-		type: DataTypes.BOOLEAN,
+	staff: {
+		type: DataTypes.BIGINT,
 	},
 });
 
