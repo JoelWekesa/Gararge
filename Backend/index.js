@@ -9,11 +9,12 @@ const loginAPI = require("./routes/login");
 const machinesAPI = require("./routes/machines");
 const departmentsAPI = require("./routes/departments");
 const categoriesAPI = require("./routes/categories");
-const suppliesAPI = require("./routes/supplies")
+const suppliesAPI = require("./routes/supplies");
 const salesAPI = require("./routes/sales");
 const toolsAPI = require("./routes/tools");
-const ppeAPI = require("./routes/ppes")
-
+const ppeAPI = require("./routes/ppes");
+const washPricesAPI = require("./routes/washprices");
+const carWashesAPI = require("./routes/carwashes")
 
 const app = express();
 
@@ -31,7 +32,8 @@ app.use("/api/sales", salesAPI);
 app.use("/api/tools", toolsAPI);
 app.use("/api/categories", categoriesAPI);
 app.use("/api/ppes", ppeAPI);
-
+app.use("/api/carwashprices", washPricesAPI);
+app.use("/api/carwashes", carWashesAPI);
 
 const PORT = process.env.PORT || 5000;
 

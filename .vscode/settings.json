@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"carwashprices",
 		"garage",
 		"hstore",
 		"newstaff",
@@ -17,10 +18,9 @@
 		"suppliescategories",
 		"twilio",
 		"usernamedb",
-		"uuidv"
+		"uuidv",
+		"washprices"
 	],
 	"better-comments.highlightPlainText": true,
-	"cSpell.ignoreWords": [
-		"garage"
-	]
+	"cSpell.ignoreWords": ["garage"]
 }
