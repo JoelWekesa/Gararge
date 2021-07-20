@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import { CircularProgress } from "@material-ui/core";
 import Alert from "react-bootstrap/Alert";
-import { baseUrl } from "../config/baseUrl";
+import { passwordReset } from "../redux/auth/actions";
 
 export class ResetDefault extends Component {
 	state = {
@@ -15,6 +14,7 @@ export class ResetDefault extends Component {
 		loading: false,
 		error: null,
 		redirect: false,
+		success: false,
 	};
 
 	handleChange = (e) => {
@@ -27,49 +27,32 @@ export class ResetDefault extends Component {
 
 	handleReset = async (e) => {
 		e.preventDefault();
+		const { username, password, code } = this.state;
+		await this.props.passwordReset(username, code, password);
 		this.setState({
 			...this.state,
-			loading: true,
+			open: true,
 		});
-		const { username, password, code } = this.state;
-		const url = `${baseUrl}/password/default`;
-		const body = { username, password, code };
-		await axios
-			.put(url, body)
-			.then(() => {
-				this.setState({
-					...this.state,
-					error: null,
-					loading: false,
-					redirect: true,
-				});
-			})
-			.catch((err) => {
-				this.setState({
-					...this.state,
-					open: true,
-					error: err.message,
-					loading: false,
-				});
-			});
 		setTimeout(() => {
 			this.setState({
 				...this.state,
 				open: false,
+				redirect: true,
 			});
 		}, 5000);
 	};
 	render() {
-		const { auth } = this.props;
+		const { auth, reset } = this.props;
 		const { isAuthenticated } = auth;
-		const { error, loading, open, username, password, redirect, code } =
-			this.state;
+		const { error, loading, success } = reset;
+		const { open, username, password, redirect, code } = this.state;
 		if (isAuthenticated) {
 			return <Redirect to="/" />;
 		}
-		if (redirect) {
-			return <Redirect to="/" />;
+		if (redirect && success) {
+			return <Redirect to="/auth/login" />;
 		}
+
 		return (
 			<>
 				{error && !loading && open ? (
@@ -146,7 +129,15 @@ export class ResetDefault extends Component {
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
+		reset: state.password,
 	};
 };
 
-export default connect(mapStateToProps)(ResetDefault);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		passwordReset: (username, code, password) =>
+			dispatch(passwordReset(username, code, password)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResetDefault);

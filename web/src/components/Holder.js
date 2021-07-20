@@ -251,93 +251,7 @@ export class Holder extends Component {
 									<i className="mdi mdi-home menu-icon"></i>
 								</a>
 							</li>
-							{admin || super_admin ? (
-								<li className="nav-item">
-									<a
-										className="nav-link"
-										data-toggle="collapse"
-										href="#ui-basic"
-										aria-expanded="false"
-										aria-controls="ui-basic">
-										<span className="menu-title">Staff</span>
-										<i className="menu-arrow"></i>
-										<i className="mdi mdi-account-multiple menu-icon"></i>
-									</a>
-									<div className="collapse" id="ui-basic">
-										<ul className="nav flex-column sub-menu">
-											{admin || super_admin ? (
-												<li className="nav-item">
-													{" "}
-													<a className="nav-link" href="/staff/add">
-														Add new staff
-													</a>
-												</li>
-											) : null}
 
-											{super_admin ? (
-												<>
-													<li className="nav-item">
-														{" "}
-														<a className="nav-link" href="/staff/add">
-															Add admin
-														</a>
-													</li>
-													<li className="nav-item">
-														{" "}
-														<a className="nav-link" href="/reset/password">
-															Reset staff password
-														</a>
-													</li>
-													<li className="nav-item">
-														{" "}
-														<a className="nav-link" href="/staff/add">
-															Remove staff
-														</a>
-													</li>
-													<li className="nav-item">
-														{" "}
-														<a className="nav-link" href="/staff/add">
-															Remove admin
-														</a>
-													</li>{" "}
-												</>
-											) : null}
-										</ul>
-									</div>
-								</li>
-							) : null}
-							{admin || super_admin ? (
-								<li className="nav-item">
-									<a
-										className="nav-link"
-										data-toggle="collapse"
-										href="#supplies"
-										aria-expanded="false"
-										aria-controls="supplies">
-										<span className="menu-title">Supplies</span>
-										<i className="menu-arrow"></i>
-										<i className="mdi mdi-cart-plus menu-icon"></i>
-									</a>
-									<div className="collapse" id="supplies">
-										<ul className="nav flex-column sub-menu">
-											<li className="nav-item">
-												{" "}
-												<a className="nav-link" href="/supply/add">
-													{" "}
-													New Supply{" "}
-												</a>
-											</li>
-											<li className="nav-item">
-												{" "}
-												<a className="nav-link" href="/supply/edit">
-													{" "}
-													Edit Supply{" "}
-												</a>
-											</li>
-										</ul>
-									</div>
-								</li>
-							) : null}
 							<li className="nav-item">
 								<a className="nav-link" href="pages/icons/mdi.html">
 									<span className="menu-title">Icons</span>
@@ -362,42 +276,76 @@ export class Holder extends Component {
 									<i className="mdi mdi-table-large menu-icon"></i>
 								</a>
 							</li>
+
 							<li className="nav-item">
 								<a
 									className="nav-link"
 									data-toggle="collapse"
-									href="#general-pages"
+									href="#management"
 									aria-expanded="false"
-									aria-controls="general-pages">
-									<span className="menu-title">Sample Pages</span>
+									aria-controls="management">
+									<span className="menu-title">Management</span>
 									<i className="menu-arrow"></i>
 									<i className="mdi mdi-medical-bag menu-icon"></i>
 								</a>
-								<div className="collapse" id="general-pages">
+								<div className="collapse" id="management">
 									<ul className="nav flex-column sub-menu">
 										<li className="nav-item">
 											{" "}
-											<a
-												className="nav-link"
-												href="pages/samples/blank-page.html">
+											<a className="nav-link" id="test" href="/staff/add">
 												{" "}
-												Blank Page{" "}
+												Add New Staff{" "}
+											</a>
+										</li>
+										{super_admin ? (
+											<>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/staff/add">
+														Add admin
+													</a>
+												</li>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/staff/add">
+														Remove staff
+													</a>
+												</li>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/staff/add">
+														Remove admin
+													</a>
+												</li>{" "}
+											</>
+										) : null}
+
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/supply/add">
+												{" "}
+												Add New Supply{" "}
+											</a>
+										</li>
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/supply/edit">
+												{" "}
+												Edit Supply{" "}
+											</a>
+										</li>
+										<li className="nav-item">
+											{" "}
+											<a className="nav-link" href="/carwash/add">
+												{" "}
+												Add Car Wash Record{" "}
 											</a>
 										</li>
 										<li className="nav-item">
 											{" "}
 											<a className="nav-link" href="pages/samples/login.html">
 												{" "}
-												Login{" "}
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a
-												className="nav-link"
-												href="pages/samples/register.html">
-												{" "}
-												Register{" "}
+												View Staff Washes
 											</a>
 										</li>
 										<li className="nav-item">

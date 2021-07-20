@@ -5,11 +5,9 @@ var bcrypt = require("bcryptjs");
 const { Users } = require("../models/Staff");
 const { Resetcodes } = require("../models/ResetCodes");
 const { admin } = require("../middleware/admin/check");
-const { TWILIO_TOKEN, TWILIO_ACCOUNT_SID, password_staff } = process.env;
+const nodemailer = require("nodemailer");
 
 const router = Router();
-const client = require("twilio")(TWILIO_ACCOUNT_SID, TWILIO_TOKEN);
-const code = Math.floor(1000000 * Math.random()).toString(); //? Bcrypt only encrypts strings.
 
 //? Add new staff
 
@@ -20,6 +18,7 @@ router.post("/add", [admin], (req, res) => {
 		username,
 		national_id,
 		phone_number,
+		email,
 		department,
 	} = req.body;
 	try {
@@ -29,42 +28,30 @@ router.post("/add", [admin], (req, res) => {
 			username &&
 			national_id &&
 			phone_number &&
-			department
+			department &&
+			email
 		) {
+			const generator = Math.floor(100000 + Math.random() * 900000); //Generate 6 random numbers
 			Users.create({
 				first_name,
 				last_name,
 				username,
 				national_id,
 				phone_number,
+				email,
 				department,
 				staff: true,
-				password: bcrypt.hashSync(password_staff, 10),
+				password: bcrypt.hashSync((generator * Math.random()).toString(), 10),
 			})
 				.then(async (user) => {
 					await Resetcodes.create({
 						user: user.id,
-						code: bcrypt.hashSync(code, 10),
+						code: bcrypt.hashSync(generator.toString(), 10),
 					})
 						.then(() => {
-							client.messages
-								.create({
-									body: `Your reset code is ${code}`,
-									from: "+13372431053",
-									to: `+254${user.phone_number}`,
-								})
-								.then(() => {
-									return res
-										.status(200)
-										.json({
-											Success: "Account successfully created.",
-										})
-										.catch((err) => {
-											return res.status(400).json({
-												message: err.message,
-											});
-										});
-								});
+							return res.status(200).json({
+								Success: "Successfully added a staff member.",
+							});
 						})
 						.catch((err) => {
 							return res.status(400).json({
@@ -175,34 +162,54 @@ router.post("/request/code", async (req, res) => {
 					return res.status(404).json({ message: "Invalid username" });
 				}
 
-				await Resetcodes.create({
-					user: user.id,
-					code: bcrypt.hashSync(code, 10),
-				})
-					.then(() => {
-						client.messages
-							.create({
-								body: `Your reset code is ${code}`,
-								from: "+13372431053",
-								to: `+254${user.phone_number}`,
-							})
-							.then(() => {
-								return res
-									.status(200)
-									.json({
-										Success: "Reset code sent successfully.",
-									})
-									.catch((err) => {
-										return res.status(400).json({
-											message: err.message,
+				await Resetcodes.destroy({ where: { user: user.id } })
+					.then(async () => {
+						const generator = Math.floor(100000 + Math.random() * 900000); //Generate 6 random numbers
+
+						await Resetcodes.create({
+							user: user.id,
+							code: bcrypt.hashSync(generator.toString(), 10),
+						})
+							.then(async () => {
+								//**Ref link to node mailer: https://nodemailer.com/about/ */
+								const transporter = nodemailer.createTransport({
+									service: "gmail",
+									auth: {
+										user: process.env.EMAIL,
+										pass: process.env.EMAIL_PASS,
+									},
+								});
+
+								// send mail with defined transport object
+								await transporter.sendMail(
+									{
+										from: '"Auto Top Garage" <support@autotop.co.ke>',
+										to: `${user.email}`,
+										subject: "Password Reset",
+										html: `<b style = "text-transform: capitalize"> <p>Hi ${user.first_name}, </p> <p>Your reset code is ${generator}</P></b>`, // html body
+									},
+									(err, data) => {
+										if (err) {
+											return res.status(500).json({
+												error: err.message,
+											});
+										}
+
+										return res.status(200).json({
+											Success: "Email sent successfully.",
+											data,
 										});
-									});
+									}
+								);
+							})
+							.catch((err) => {
+								return res.status(400).json({
+									message: err.message,
+								});
 							});
 					})
 					.catch((err) => {
-						return res.status(400).json({
-							message: err.message,
-						});
+						return res.status(500).json({ message: err.message });
 					});
 			})
 			.catch((err) => {

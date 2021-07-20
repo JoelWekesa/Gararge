@@ -6,6 +6,7 @@ import { passwordResetReducer } from "./auth/reducer";
 import { allStaffReducer } from "./staff/reducer";
 import { addSupplyReducer } from "./supplies/reducer";
 import { categoriesReducer } from "./categories/reducer";
+import { washReducer, addWashReducer } from "./carwash/reducer";
 
 export const rootReducer = combineReducers({
 	auth: loginReducer,
@@ -15,4 +16,6 @@ export const rootReducer = combineReducers({
 	staff: allStaffReducer,
 	newsupply: addSupplyReducer,
 	categories: categoriesReducer,
+	wash: washReducer,
+	addwash: addWashReducer,
 });

@@ -49,7 +49,7 @@ export class Login extends Component {
 				{error && !loading && open ? (
 					<Alert variant="danger" onClose={this.handleClose} dismissible>
 						<Alert.Heading>Oh snap!</Alert.Heading>
-						<p>Login failed.</p>
+						<p>{error}</p>
 					</Alert>
 				) : null}
 				<h4>Hello! let's get started.</h4>
@@ -92,9 +92,9 @@ export class Login extends Component {
 
 					<div className="mt-4 font-weight-light">
 						{" "}
-						Didn't reset your default password?{" "}
-						<a href="/reset/default/password" className="text-primary">
-							Reset
+						New here of forgot password?{" "}
+						<a href="/request/reset/code" className="text-primary">
+							Reset Password
 						</a>
 					</div>
 				</form>{" "}

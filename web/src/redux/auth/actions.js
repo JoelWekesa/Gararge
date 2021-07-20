@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as Types from "./types";
 import { baseUrl } from "../../config/baseUrl";
-import { configHelper } from "../../config/helper";
 
 //? Login
 const authStart = () => {
@@ -78,8 +77,7 @@ export const userLogin = (username, password) => {
 				dispatch(checkAuth(1000 * 3600));
 			})
 			.catch((err) => {
-				const { message } = err;
-				dispatch(authFail(message));
+				dispatch(authFail(err.message));
 			});
 	};
 };
@@ -94,15 +92,17 @@ export const userLogout = () => {
 //! End of logout dispatch
 
 //? Reset dispatch
-export const passwordReset = (username) => {
-	return (dispatch, getState) => {
+export const passwordReset = (username, code, password) => {
+	return (dispatch) => {
 		dispatch(startReset());
-		const url = `${baseUrl}/password/reset`;
+		const url = `${baseUrl}/staff/password/reset`;
 		const body = {
 			username,
+			code,
+			password,
 		};
 		axios
-			.put(url, body, configHelper(getState))
+			.put(url, body)
 			.then(() => {
 				dispatch(resetSuccess());
 			})

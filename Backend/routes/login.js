@@ -16,8 +16,8 @@ router.post("/login", (req, res) => {
 		})
 			.then((user) => {
 				if (!user) {
-					return res.status(404).json({
-						error:
+					return res.status(400).json({
+						message:
 							"We could not find a staff member with the username you provided.",
 					});
 				}
@@ -25,7 +25,7 @@ router.post("/login", (req, res) => {
 				const valid = bcrypt.compareSync(password, user.password);
 				if (!valid) {
 					return res.status(400).json({
-						error: "Invalid Password.",
+						message: "Invalid Password.",
 					});
 				}
 
@@ -46,12 +46,12 @@ router.post("/login", (req, res) => {
 			})
 			.catch((err) => {
 				return res.status(500).json({
-					error: err.message,
+					message: err.message,
 				});
 			});
 	} catch (err) {
 		return res.status(500).json({
-			error: err.message,
+			message: err.message,
 		});
 	}
 });

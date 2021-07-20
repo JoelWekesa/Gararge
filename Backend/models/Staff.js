@@ -23,6 +23,9 @@ const Users = db.define("Users", {
 	password: {
 		type: DataTypes.STRING,
 	},
+	email: {
+		type: DataTypes.STRING,
+	},
 	staff: {
 		type: DataTypes.BOOLEAN,
 	},

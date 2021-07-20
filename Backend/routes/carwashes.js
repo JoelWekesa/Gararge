@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const { Carwashes } = require("../models/Carwashes");
 const { Washprices } = require("../models/Washprices");
+const { admin } = require("../middleware/admin/check")
 
 const router = Router();
 
 // ? Add car wash.
 
-router.post("/add", async (req, res) => {
+router.post("/add", [admin], async (req, res) => {
 	try {
 		const { staff, type, plates } = req.body;
 		if (!staff) {

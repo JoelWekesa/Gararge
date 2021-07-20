@@ -30,6 +30,7 @@ export const addNewStaff = (
 	username,
 	national_id,
 	phone_number,
+	email,
 	department
 ) => {
 	return (dispatch, getState) => {
@@ -40,6 +41,7 @@ export const addNewStaff = (
 			username,
 			national_id,
 			phone_number,
+			email,
 			department,
 		};
 

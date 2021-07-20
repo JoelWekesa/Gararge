@@ -1,14 +1,17 @@
 const { Router } = require("express");
 const { Washprices } = require("../models/Washprices");
+const { admin } = require("../middleware/admin/check");
 
 const router = Router();
 
 //? Get all prices
 
-router.get("/all", async (req, res) => {
+router.get("/all", [admin], async (req, res) => {
 	try {
 		Washprices.findAndCountAll({ order: [["id", "DESC"]] }).then((prices) => {
-			return res.status(200).json({ Success: "Successfully fetched prices" });
+			return res
+				.status(200)
+				.json({ Success: "Successfully fetched prices", prices });
 		});
 	} catch (err) {
 		return res.status(500).json({ message: err.message });
@@ -69,7 +72,7 @@ router.put("/price/:id", async (req, res) => {
 
 router.delete("/price/:id", async (req, res) => {
 	try {
-		const { id } = req.params
+		const { id } = req.params;
 		await Washprices.destroy({ where: { id } })
 			.then(() => {
 				return res

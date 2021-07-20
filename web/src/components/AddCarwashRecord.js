@@ -6,22 +6,21 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { allDepartments } from "../redux/departments/actions";
-import { addNewStaff } from "../redux/staff/actions";
+import { addNewStaff, getAllStaff } from "../redux/staff/actions";
+import { washPrices, addWashRecord } from "../redux/carwash/actions";
 
-export class AddStaff extends Component {
+export class AddCarwashRecord extends Component {
 	state = {
-		first_name: "",
-		last_name: "",
-		username: "",
-		national_id: "",
-		phone_number: "",
-		department: "",
-		email: "",
+		type: "",
+		plates: "",
+		member: "",
 		open: false,
 	};
 
 	componentDidMount = () => {
 		this.props.allDepartments();
+		this.props.getAllStaff();
+		this.props.washPrices();
 	};
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -48,64 +47,31 @@ export class AddStaff extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
+		const { type, plates, member } = this.state;
+		const staff = member;
+		this.props.addWashRecord(type, plates, staff);
+
 		this.setState({
 			...this.state,
 			open: true,
-		});
-		const {
-			first_name,
-			last_name,
-			username,
-			national_id,
-			phone_number,
-			email,
-			department,
-		} = this.state;
-
-		console.log(this.state);
-
-		await this.props.addNewStaff(
-			first_name,
-			last_name,
-			username,
-			national_id,
-			phone_number,
-			email,
-			department
-		);
-
-		this.setState({
-			...this.state,
-			first_name: "",
-			last_name: "",
-			username: "",
-			national_id: "",
-			phone_number: "",
-			department: "",
-			email: "",
 		});
 
 		setTimeout(() => {
 			this.setState({
 				...this.state,
 				open: false,
+				type: "",
+				plates: "",
+				member: "",
 			});
-		}, 5000);
+		}, 3000);
 	};
 	render() {
-		const {
-			open,
-			first_name,
-			last_name,
-			username,
-			national_id,
-			phone_number,
-			department,
-			email,
-		} = this.state;
-		const { departments, auth, newstaff } = this.props;
+		const { open, member, plates, type } = this.state;
+		const { auth, staff, wash, addwash } = this.props;
+
 		const { isAuthenticated } = auth;
-		const { error, loading } = newstaff;
+		const { error, loading } = addwash;
 
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
@@ -115,7 +81,8 @@ export class AddStaff extends Component {
 			return <Unauthorized />;
 		}
 		try {
-			const { rows } = departments.departments.departments;
+			const { rows } = staff.users.users;
+			const { prices } = wash;
 			return (
 				<div className="grid-margin stretch-card">
 					{!error && !loading ? (
@@ -125,7 +92,7 @@ export class AddStaff extends Component {
 							aria-labelledby="example-custom-modal-styling-title"
 							size="sm">
 							<Modal.Body>
-								<p>New staff successfully added.</p>
+								<p>Record successfully added.</p>
 							</Modal.Body>
 						</Modal>
 					) : null}
@@ -135,103 +102,60 @@ export class AddStaff extends Component {
 							{error && !loading && open ? (
 								<Alert variant="danger" onClose={this.handleClose} dismissible>
 									<Alert.Heading>Oh snap!</Alert.Heading>
-									<p>Staff not created.</p>
+									<p>{error}</p>
 								</Alert>
 							) : null}
 							<h4 className="card-title">Hello, let's get started.</h4>
 							<p className="card-description">
 								{" "}
-								Adding new staff has never been this easy.{" "}
+								Adding a new carwash has never been this easy.{" "}
 							</p>
 							<form className="forms-sample">
 								<div className="form-group">
-									<label htmlFor="first_name">First Name</label>
+									<label htmlFor="plates">Vehicle plates</label>
 									<input
-										name="first_name"
+										name="plates"
 										type="text"
 										className="form-control"
-										id="first_name"
-										placeholder="First Name"
-										value={first_name}
-										onChange={this.handleChange}
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="last_name">Last Name</label>
-									<input
-										name="last_name"
-										type="text"
-										className="form-control"
-										id="last_name"
-										placeholder="Last Name"
-										value={last_name}
-										onChange={this.handleChange}
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="exampleInputUsername1">Username</label>
-									<input
-										name="username"
-										type="text"
-										className="form-control"
-										id="exampleInputUsername1"
-										placeholder="Username"
-										value={username}
+										id="plates"
+										placeholder="Vehicle plates"
+										value={plates}
 										onChange={this.handleChange}
 									/>
 								</div>
 
 								<div className="form-group">
-									<label htmlFor="national_id">National ID</label>
-									<input
-										name="national_id"
-										type="text"
-										className="form-control"
-										id="national_id"
-										placeholder="National ID"
-										value={national_id}
-										onChange={this.handleChange}
-									/>
-								</div>
-								<div className="form-group">
-									<label htmlFor="phone_number">Phone Number</label>
-									<input
-										name="phone_number"
-										type="text"
-										className="form-control"
-										id="phone_number"
-										placeholder="Phone Number"
-										value={phone_number}
-										onChange={this.handleChange}
-									/>
-								</div>
-
-								<div className="form-group">
-									<label htmlFor="exampleInputEmail1">Email</label>
-									<input
-										name="email"
-										type="email"
-										className="form-control"
-										id="exampleInputEmail1"
-										placeholder="Email"
-										value={email}
-										onChange={this.handleChange}
-									/>
-								</div>
-
-								<div className="form-group">
-									<label htmlFor="department">Department</label>
+									<label htmlFor="type">Vehicle category</label>
 									<select
 										className="form-control form-control-lg"
-										id="department"
-										name="department"
+										id="type"
+										name="type"
 										onChange={this.handleChange}
-										value={department}>
-										<option>Select Department</option>
-										{rows.map((department) => {
+										value={type}>
+										<option>Select Category</option>
+										{prices.map((price) => {
 											return (
-												<option key={department.id} value={department.id}>
-													{department.department}
+												<option key={price.id} value={price.type}>
+													{price.type}
+												</option>
+											);
+										})}
+									</select>
+								</div>
+
+								<div className="form-group">
+									<label htmlFor="member">Staff</label>
+									<select
+										className="form-control form-control-lg"
+										id="member"
+										name="member"
+										onChange={this.handleChange}
+										value={member}>
+										<option>Select Staff</option>
+										{rows.map((user) => {
+											return (
+												<option key={user.id} value={user.id}>
+													{user.first_name} {user.last_name}
 												</option>
 											);
 										})}
@@ -244,7 +168,7 @@ export class AddStaff extends Component {
 										type="submit"
 										className="btn btn-gradient-primary mr-2"
 										onClick={this.handleSubmit}>
-										Add Staff
+										Add Record
 									</button>
 								)}
 							</form>
@@ -267,19 +191,25 @@ const mapStateToProps = (state) => {
 		auth: state.auth,
 		departments: state.departments,
 		newstaff: state.newstaff,
+		staff: state.staff,
+		wash: state.wash,
+		addwash: state.addwash,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		allDepartments: () => dispatch(allDepartments()),
+		getAllStaff: () => dispatch(getAllStaff()),
+		washPrices: () => dispatch(washPrices()),
+		addWashRecord: (type, plates, staff) =>
+			dispatch(addWashRecord(type, plates, staff)),
 		addNewStaff: (
 			first_name,
 			last_name,
 			username,
 			national_id,
 			phone_number,
-			email,
 			department
 		) =>
 			dispatch(
@@ -289,11 +219,10 @@ const mapDispatchToProps = (dispatch) => {
 					username,
 					national_id,
 					phone_number,
-					email,
 					department
 				)
 			),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddStaff);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCarwashRecord);
