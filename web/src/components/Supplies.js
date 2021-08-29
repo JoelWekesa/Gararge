@@ -5,6 +5,10 @@ import { CircularProgress } from "@material-ui/core";
 import { getAllSupplies, specificSupply } from "../redux/supplies/actions";
 
 export class Supplies extends Component {
+
+	state = {
+		term: ""
+	}
 	componentDidMount = async () => {
 		await this.props.getAllSupplies();
 	}
@@ -14,8 +18,17 @@ export class Supplies extends Component {
 		this.props.history.push(`/supply/${id}`);
 	};
 
+	handleChange = (e) => {
+		const { name, value } = e.target
+		this.setState({
+			...this.state,
+			[name]: value,
+		})
+	}
+
 	render() {
 		const { auth, supplies } = this.props;
+		const { term } = this.state
 		const { isAuthenticated } = auth;
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
@@ -26,6 +39,18 @@ export class Supplies extends Component {
 			return (
 				<div className="grid-margin stretch-card">
 					<div className="card">
+						<form>
+							<div className="input-group">
+								<input
+									type="text"
+									className="form-control bg-transparent border-0"
+									placeholder="Search supplies"
+									name = "term"
+									value = { term}
+									onChange = {this.handleChange}
+								/>
+							</div>
+						</form>
 						<div className="card-body">
 							<h4 className="card-title">Available Supplies</h4>
 							<p className="card-description">
@@ -43,7 +68,23 @@ export class Supplies extends Component {
 										</tr>
 									</thead>
 									<tbody>
-										{rows.map((supply, id) => {
+										{rows.filter(val => {
+											if(term  === "") {
+												return val
+											} else if (val.name.replaceAll(" ", "").toLowerCase().includes(term.replaceAll(" ", "").toLocaleLowerCase())) {
+												return val
+											}
+
+											else {
+												return val.name.replaceAll(" ", "")
+													.toLowerCase()
+													.includes(
+														term.trim().replaceAll(" ", "").toLowerCase()
+													);
+											}
+
+											
+										}).map((supply, id) => {
 											return (
 												<tr key={id}>
 													<td>{supply.name}</td>

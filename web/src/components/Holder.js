@@ -8,6 +8,8 @@ export class Holder extends Component {
 		this.props.userLogout();
 	};
 
+	
+
 	render() {
 		const { auth } = this.props;
 		const { staff } = auth;
@@ -30,7 +32,7 @@ export class Holder extends Component {
 							data-toggle="minimize">
 							<span className="mdi mdi-menu"></span>
 						</button>
-						<div className="search-field d-none d-md-block">
+						{/* <div className="search-field d-none d-md-block">
 							<form className="d-flex align-items-center h-100" action="/">
 								<div className="input-group">
 									<div className="input-group-prepend bg-transparent">
@@ -40,10 +42,12 @@ export class Holder extends Component {
 										type="text"
 										className="form-control bg-transparent border-0"
 										placeholder="Search projects"
+										onMouseEnter={this.handleEntered}
+										onMouseLeave={this.handleLeave}
 									/>
 								</div>
 							</form>
-						</div>
+						</div> */}
 						<ul className="navbar-nav navbar-nav-right">
 							<li className="nav-item nav-profile dropdown">
 								<a
@@ -290,7 +294,6 @@ export class Holder extends Component {
 								</a>
 								<div className="collapse" id="management">
 									<ul className="nav flex-column sub-menu">
-										
 										{super_admin ? (
 											<>
 												<li className="nav-item" id="addstaff">
