@@ -43,3 +43,129 @@ export const addSupply = (name, description, price, quantity, category) => {
 };
 
 //? End of add product.
+
+//! Get all products.
+
+const startGet = () => {
+	return {
+		type: Types.START_GET,
+	};
+};
+
+const getSuccess = (data) => {
+	return {
+		type: Types.GET_SUCCESS,
+		payload: data,
+	};
+};
+
+const getFail = (message) => {
+	return {
+		type: Types.GET_FAIL,
+		payload: message,
+	};
+};
+
+export const getAllSupplies = () => {
+	return (dispatch, getState) => {
+		dispatch(startGet());
+		const url = `${baseUrl}/supplies/all`;
+		axios
+			.get(url, configHelper(getState))
+			.then((res) => {
+				const { data } = res;
+				dispatch(getSuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(getFail(message));
+			});
+	};
+};
+
+//* Get specific supply
+
+const startSpecific = () => {
+	return {
+		type: Types.START_SPECIFIC,
+	};
+};
+
+const specificSuccess = (data) => {
+	return {
+		type: Types.SPECIFIC_SUCCESS,
+		payload: data,
+	};
+};
+
+const specificFail = (message) => {
+	return {
+		type: Types.SPECIFIC_FAIL,
+		payload: message,
+	};
+};
+
+export const specificSupply = (id) => {
+	return (dispatch, getState) => {
+		dispatch(startSpecific());
+		const url = `${baseUrl}/supplies/supply/${id}`;
+		axios
+			.get(url)
+			.then((res) => {
+				const { data } = res;
+				dispatch(specificSuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(specificFail(message));
+			});
+	};
+};
+
+//* End of specific supply
+
+
+// Edit supply
+
+const startEdit = () => {
+	return {
+		type: Types.START_EDIT
+	}
+}
+
+const editSuccess = (data) => {
+	return {
+		type: Types.EDIT_SUCCESS,
+		payload: data
+	}
+}
+
+const editFail = (message) => {
+	return { 
+		type: Types.EDIT_FAIL,
+		payload: message
+	}
+}
+
+
+export const editSupply = (supply) => {
+	return (dispatch, getState) => {
+		dispatch(startEdit());
+		const url = `${baseUrl}/supplies/edit/${supply.id}`;
+		const body = {
+			description: supply.description,
+			price: supply.price,
+			quantity: supply.quantity,
+		};
+
+		axios.put(url, body, configHelper(getState)).then(res => {
+			const {data} = res;
+			dispatch(editSuccess(data));
+		}).catch(err => {
+			const { message } = err;
+			dispatch(editFail(message));
+		})
+	}
+}
+
+// End of edit data

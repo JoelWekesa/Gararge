@@ -28,7 +28,7 @@ const allFail = (message) => {
 export const allCategories = () => {
 	return (dispatch, getState) => {
 		dispatch(startAll());
-		const url = `${baseUrl}/suppliescategories/all`;
+		const url = `${baseUrl}/categories/all`;
 		axios
 			.get(url, configHelper(getState))
 			.then((res) => {

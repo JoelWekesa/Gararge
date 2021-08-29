@@ -290,16 +290,17 @@ export class Holder extends Component {
 								</a>
 								<div className="collapse" id="management">
 									<ul className="nav flex-column sub-menu">
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" id="test" href="/staff/add">
-												{" "}
-												Add New Staff{" "}
-											</a>
-										</li>
+										
 										{super_admin ? (
 											<>
-												<li className="nav-item">
+												<li className="nav-item" id="addstaff">
+													{" "}
+													<a className="nav-link" id="test" href="/staff/add">
+														{" "}
+														Add New Staff{" "}
+													</a>
+												</li>
+												<li className="nav-item" id="addadmin">
 													{" "}
 													<a className="nav-link" href="/staff/add">
 														Add admin
@@ -307,7 +308,10 @@ export class Holder extends Component {
 												</li>
 												<li className="nav-item">
 													{" "}
-													<a className="nav-link" href="/staff/add">
+													<a
+														className="nav-link"
+														href="/staff/add"
+														id="removestaff">
 														Remove staff
 													</a>
 												</li>
@@ -320,34 +324,40 @@ export class Holder extends Component {
 											</>
 										) : null}
 
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/supply/add">
-												{" "}
-												Add New Supply{" "}
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/supply/edit">
-												{" "}
-												Edit Supply{" "}
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="/carwash/add">
-												{" "}
-												Add Car Wash Record{" "}
-											</a>
-										</li>
-										<li className="nav-item">
-											{" "}
-											<a className="nav-link" href="pages/samples/login.html">
-												{" "}
-												View Staff Washes
-											</a>
-										</li>
+										{admin || super_admin ? (
+											<>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/supply/add">
+														{" "}
+														Add New Supply{" "}
+													</a>
+												</li>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/supply/all">
+														{" "}
+														Add to Existing Supply{" "}
+													</a>
+												</li>
+												<li className="nav-item">
+													{" "}
+													<a className="nav-link" href="/carwash/add">
+														{" "}
+														Add Car Wash Record{" "}
+													</a>
+												</li>
+												<li className="nav-item">
+													{" "}
+													<a
+														className="nav-link"
+														href="pages/samples/login.html">
+														{" "}
+														View Staff Washes
+													</a>
+												</li>{" "}
+											</>
+										) : null}
 										<li className="nav-item">
 											{" "}
 											<a

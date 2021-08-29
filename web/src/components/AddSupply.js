@@ -18,6 +18,7 @@ export class AddSupply extends Component {
 		category: "",
 		categories: [],
 		open: false,
+		
 	};
 
 	componentDidMount = () => {
@@ -59,8 +60,12 @@ export class AddSupply extends Component {
 	handleDownload = () => {
 		const { newsupply } = this.props;
 		const { qrcode, name } = newsupply.supply.supply;
+		
 		const pdf = new jsPDF();
-		pdf.addImage(qrcode, "JPEG", 0, 0);
+
+		pdf.addImage(qrcode, "JPEG", 10, 10);
+		
+
 		pdf.save(`${name}.pdf`);
 		this.setState({
 			...this.state,
@@ -74,7 +79,8 @@ export class AddSupply extends Component {
 	};
 
 	render() {
-		const { open, name, description, price, quantity, category } = this.state;
+		const { open, name, description, price, quantity, category, } =
+			this.state;
 		const { auth, newsupply } = this.props;
 		const { categories } = this.props.categories;
 		const { isAuthenticated } = auth;
@@ -104,6 +110,7 @@ export class AddSupply extends Component {
 						<Modal.Body>
 							<h4>{name} was added.</h4>
 							<p>{description}</p>
+							
 						</Modal.Body>
 						<Modal.Footer>
 							<button
@@ -135,7 +142,7 @@ export class AddSupply extends Component {
 							{" "}
 							Adding new supplies has never been this easy.{" "}
 						</p>
-						<form className="forms-sample">
+						<form className="forms-sample" id = "form">
 							<div className="form-group">
 								<label htmlFor="name">Name</label>
 								<input

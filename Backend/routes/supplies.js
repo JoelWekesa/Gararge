@@ -9,7 +9,7 @@ const router = Router();
 
 //? Get all supplies
 
-router.get("/all", async (req, res) => {
+router.get("/all", [admin], async (req, res) => {
 	try {
 		await Supplies.findAndCountAll({ order: [["id", "DESC"]] })
 			.then((supplies) => {
@@ -188,6 +188,19 @@ router.put("/edit/:id", async (req, res) => {
 			message: err.message,
 		});
 	}
+});
+
+//? Get specific product
+
+router.get("/supply/:id", async (req, res) => {
+	const { id } = req.params;
+	await Supplies.findByPk(id)
+		.then((supply) => {
+			return res.status(200).json({ supply });
+		})
+		.catch((err) => {
+			return res.status(404).json({ message: err.message });
+		});
 });
 
 module.exports = router;

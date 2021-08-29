@@ -4,7 +4,12 @@ import { departmentsReducer } from "./departments/reducer";
 import { addStaffReducer } from "./staff/reducer";
 import { passwordResetReducer } from "./auth/reducer";
 import { allStaffReducer } from "./staff/reducer";
-import { addSupplyReducer } from "./supplies/reducer";
+import {
+	addSupplyReducer,
+	allProductsReducer,
+	specificProductReducer,
+	editProductReducer,
+} from "./supplies/reducer";
 import { categoriesReducer } from "./categories/reducer";
 import { washReducer, addWashReducer } from "./carwash/reducer";
 
@@ -18,4 +23,7 @@ export const rootReducer = combineReducers({
 	categories: categoriesReducer,
 	wash: washReducer,
 	addwash: addWashReducer,
+	supplies: allProductsReducer,
+	supply: specificProductReducer,
+	editsupply: editProductReducer,
 });
