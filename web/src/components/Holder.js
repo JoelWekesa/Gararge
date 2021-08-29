@@ -8,8 +8,6 @@ export class Holder extends Component {
 		this.props.userLogout();
 	};
 
-	
-
 	render() {
 		const { auth } = this.props;
 		const { staff } = auth;
@@ -256,12 +254,14 @@ export class Holder extends Component {
 								</a>
 							</li>
 
-							<li className="nav-item">
-								<a className="nav-link" href="pages/icons/mdi.html">
-									<span className="menu-title">Icons</span>
-									<i className="mdi mdi-contacts menu-icon"></i>
-								</a>
-							</li>
+							{admin || super_admin ? (
+								<li className="nav-item">
+									<a className="nav-link" href="/departments">
+										<span className="menu-title">Departments</span>
+										<i className="mdi mdi-contacts menu-icon"></i>
+									</a>
+								</li>
+							) : null}
 							<li className="nav-item">
 								<a className="nav-link" href="pages/forms/basic_elements.html">
 									<span className="menu-title">Forms</span>

@@ -3,6 +3,8 @@ import * as Types from "./types";
 import { configHelper } from "../../config/helper";
 import { baseUrl } from "../../config/baseUrl";
 
+//? Get all departments
+
 const startDepartments = () => {
 	return {
 		type: Types.START_DEPARTMENTS,
@@ -39,3 +41,49 @@ export const allDepartments = () => {
 			});
 	};
 };
+
+//? End of all departments
+
+//* Add department
+
+const startAdd = () => {
+	return {
+		type: Types.START_ADD,
+	};
+};
+
+const addSuccess = (data) => {
+	return {
+		type: Types.ADD_SUCCESS,
+		payload: data,
+	};
+};
+
+const addFail = (message) => {
+	return {
+		type: Types.ADD_FAIL,
+		payload: message,
+	};
+};
+
+export const addDepartment = (department) => {
+	return (dispatch, getState) => {
+		dispatch(startAdd());
+		const body = {
+			department,
+		};
+		const url = `${baseUrl}/departments/add`;
+		axios
+			.post(url, body, configHelper(getState))
+			.then((res) => {
+				const { data } = res;
+				dispatch(addSuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(addFail(message));
+			});
+	};
+};
+
+//* End of add department

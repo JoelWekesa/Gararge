@@ -1,5 +1,7 @@
 import * as Types from "./types";
 
+//? Get all departments
+
 const initialState = {
 	loading: false,
 	departments: [],
@@ -32,3 +34,44 @@ export const departmentsReducer = (state = initialState, action) => {
 			return state;
 	}
 };
+
+//? End of all departments
+
+//* Start add departments
+
+const firstState = {
+	loading: false,
+	department: {},
+	error: null,
+};
+
+export const addDepartmentReducer = (state = firstState, action) => {
+	switch (action.type) {
+		case Types.START_ADD:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.ADD_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				department: action.payload,
+				error: null,
+			};
+
+		case Types.ADD_FAIL:
+			return {
+				...state,
+				loading: false,
+				department: {},
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+//* End of add departments

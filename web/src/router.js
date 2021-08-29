@@ -10,6 +10,7 @@ import AddCarwashRecord from "./components/AddCarwashRecord";
 import RequestPassWordReset from "./components/RequestPassWordReset";
 import Supplies from "./components/Supplies";
 import Supply from "./components/Supply";
+import Departments from "./components/Departments";
 
 const Routes = () => (
 	<Router>
@@ -24,6 +25,7 @@ const Routes = () => (
 				component={RequestPassWordReset}
 			/>
 			<Route exact path="/supply/add" component={AddSupply} />
+			<Route exact path="/departments" component={Departments} />
 			<Route exact path="/carwash/add" component={AddCarwashRecord} />
 			<Route exact path="/supply/all" component={Supplies} />
 			<Route exact path="/supply/:id" component={Supply} />
