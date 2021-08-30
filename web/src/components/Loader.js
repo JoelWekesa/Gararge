@@ -7,8 +7,8 @@ export class Loader extends Component {
 		redirect: false,
 	};
 
-	componentDidMount = () => {
-		setTimeout(() => {
+	componentDidMount = async () => {
+		await setTimeout(() => {
 			this.setState({
 				...this.state,
 				redirect: true,

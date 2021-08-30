@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { userLogout } from "../redux/auth/actions";
+import image from "../assets/logo2.jpg";
 
 export class Holder extends Component {
 	handleLogout = (e) => {
@@ -17,10 +18,10 @@ export class Holder extends Component {
 				<nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
 					<div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
 						<a className="navbar-brand brand-logo" href="/">
-							<img src="/assets/images/logo.svg" alt="logo" />
+							<img src={image} alt="logo" />
 						</a>
 						<a className="navbar-brand brand-logo-mini" href="/">
-							<img src="/assets/images/logo-mini.svg" alt="logo" />
+							<img src="../assets/logo.png" alt="logo" />
 						</a>
 					</div>
 					<div className="navbar-menu-wrapper d-flex align-items-stretch">
@@ -30,22 +31,6 @@ export class Holder extends Component {
 							data-toggle="minimize">
 							<span className="mdi mdi-menu"></span>
 						</button>
-						{/* <div className="search-field d-none d-md-block">
-							<form className="d-flex align-items-center h-100" action="/">
-								<div className="input-group">
-									<div className="input-group-prepend bg-transparent">
-										<i className="input-group-text border-0 mdi mdi-magnify"></i>
-									</div>
-									<input
-										type="text"
-										className="form-control bg-transparent border-0"
-										placeholder="Search projects"
-										onMouseEnter={this.handleEntered}
-										onMouseLeave={this.handleLeave}
-									/>
-								</div>
-							</form>
-						</div> */}
 						<ul className="navbar-nav navbar-nav-right">
 							<li className="nav-item nav-profile dropdown">
 								<a
@@ -104,7 +89,7 @@ export class Holder extends Component {
 									<a href="/" className="dropdown-item preview-item">
 										<div className="preview-thumbnail">
 											<img
-												src="/assets/images/faces/face4.jpg"
+												src="../assets/logo.png"
 												alt="missing"
 												className="profile-pic"
 											/>
@@ -341,6 +326,13 @@ export class Holder extends Component {
 													<a className="nav-link" href="/supply/all">
 														{" "}
 														Add to Existing Supply{" "}
+													</a>
+												</li>
+												<li className="nav-item" id="test">
+													{" "}
+													<a className="nav-link" href="/sales/all">
+														{" "}
+														Available for sale{" "}
 													</a>
 												</li>
 												<li className="nav-item">

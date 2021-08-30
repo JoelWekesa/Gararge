@@ -46,11 +46,6 @@ export class Home extends Component {
 					<div className="col-md-4 stretch-card grid-margin">
 						<div className="card bg-gradient-danger card-img-holder text-white">
 							<div className="card-body">
-								<img
-									src="assets/images/dashboard/circle.svg"
-									className="card-img-absolute"
-									alt="missing"
-								/>
 								<h4 className="font-weight-normal mb-3">
 									Weekly Sales{" "}
 									<i className="mdi mdi-chart-line mdi-24px float-right"></i>
@@ -63,11 +58,6 @@ export class Home extends Component {
 					<div className="col-md-4 stretch-card grid-margin">
 						<div className="card bg-gradient-info card-img-holder text-white">
 							<div className="card-body">
-								<img
-									src="assets/images/dashboard/circle.svg"
-									className="card-img-absolute"
-									alt="missing"
-								/>
 								<h4 className="font-weight-normal mb-3">
 									Weekly Orders{" "}
 									<i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
@@ -80,45 +70,12 @@ export class Home extends Component {
 					<div className="col-md-4 stretch-card grid-margin">
 						<div className="card bg-gradient-success card-img-holder text-white">
 							<div className="card-body">
-								<img
-									src="assets/images/dashboard/circle.svg"
-									className="card-img-absolute"
-									alt="missing"
-								/>
 								<h4 className="font-weight-normal mb-3">
 									Visitors Online{" "}
 									<i className="mdi mdi-diamond mdi-24px float-right"></i>
 								</h4>
 								<h2 className="mb-5">95,5741</h2>
 								<h6 className="card-text">Increased by 5%</h6>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-md-7 grid-margin stretch-card">
-						<div className="card">
-							<div className="card-body">
-								<div className="clearfix">
-									<h4 className="card-title float-left">
-										Visit And Sales Statistics
-									</h4>
-									<div
-										id="visit-sale-chart-legend"
-										className="rounded-legend legend-horizontal legend-top-right float-right"></div>
-								</div>
-								<canvas id="visit-sale-chart" className="mt-4"></canvas>
-							</div>
-						</div>
-					</div>
-					<div className="col-md-5 grid-margin stretch-card">
-						<div className="card">
-							<div className="card-body">
-								<h4 className="card-title">Traffic Sources</h4>
-								<canvas id="traffic-chart"></canvas>
-								<div
-									id="traffic-chart-legend"
-									className="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
 							</div>
 						</div>
 					</div>
@@ -219,70 +176,7 @@ export class Home extends Component {
 						</div>
 					</div>
 				</div>
-				<div className="row">
-					<div className="col-12 grid-margin stretch-card">
-						<div className="card">
-							<div className="card-body">
-								<h4 className="card-title">Recent Updates</h4>
-								<div className="d-flex">
-									<div className="d-flex align-items-center mr-4 text-muted font-weight-light">
-										<i className="mdi mdi-account-outline icon-sm mr-2"></i>
-										<span>jack Menqu</span>
-									</div>
-									<div className="d-flex align-items-center text-muted font-weight-light">
-										<i className="mdi mdi-clock icon-sm mr-2"></i>
-										<span>October 3rd, 2018</span>
-									</div>
-								</div>
-								<div className="row mt-3">
-									<div className="col-6 pr-1">
-										<img
-											src="assets/images/dashboard/img_1.jpg"
-											className="mb-2 mw-100 w-100 rounded"
-											alt="missing"
-										/>
-										<img
-											src="assets/images/dashboard/img_4.jpg"
-											className="mw-100 w-100 rounded"
-											alt="missing"
-										/>
-									</div>
-									<div className="col-6 pl-1">
-										<img
-											src="assets/images/dashboard/img_2.jpg"
-											className="mb-2 mw-100 w-100 rounded"
-											alt="missing"
-										/>
-										<img
-											src="assets/images/dashboard/img_3.jpg"
-											className="mw-100 w-100 rounded"
-											alt="missing"
-										/>
-									</div>
-								</div>
-								<div className="d-flex mt-5 align-items-top">
-									<img
-										src="assets/images/faces/face3.jpg"
-										className="img-sm rounded-circle mr-3"
-										alt="missing"
-									/>
-									<div className="mb-0 flex-grow">
-										<h5 className="mr-2 mb-2">
-											School Website - Authentication Module.
-										</h5>
-										<p className="mb-0 font-weight-light">
-											It is a long established fact that a reader will be
-											distracted by the readable content of a page.
-										</p>
-									</div>
-									<div className="ml-auto">
-										<i className="mdi mdi-heart-outline text-muted"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 				<div className="row">
 					<div className="col-md-7 grid-margin stretch-card">
 						<div className="card">
