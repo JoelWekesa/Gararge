@@ -15,7 +15,7 @@ import {
 } from "./supplies/reducer";
 import { categoriesReducer } from "./categories/reducer";
 import { washReducer, addWashReducer } from "./carwash/reducer";
-import { cartReducer } from "./sales/reducer";
+import { cartReducer, saleReducer } from "./sales/reducer";
 
 export const rootReducer = combineReducers({
 	auth: loginReducer,
@@ -32,4 +32,5 @@ export const rootReducer = combineReducers({
 	supply: specificProductReducer,
 	editsupply: editProductReducer,
 	cart: cartReducer,
+	sale: saleReducer,
 });

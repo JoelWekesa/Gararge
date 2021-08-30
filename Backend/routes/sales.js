@@ -51,12 +51,7 @@ router.post("/add/:id", [admin], async (req, res) => {
 					});
 				}
 
-				if (parseInt(quantity) > parseInt(supply.available)) {
-					return res.status(400).json({
-						message:
-							"The requested amount for the sale exceeds the number of supplies in stock.",
-					});
-				}
+				
 
 				available += supply.available;
 

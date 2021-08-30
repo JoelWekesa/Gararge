@@ -8,11 +8,13 @@ import {
 	adjustQTY,
 	removeFromCart,
 	clearCart,
+	newSale,
 } from "../redux/sales/actions.";
 
 export class Sales extends Component {
 	state = {
 		term: "",
+		loading: false,
 	};
 	componentDidMount = async () => {
 		await this.props.getAllSupplies();
@@ -42,9 +44,30 @@ export class Sales extends Component {
 		});
 	};
 
+	handleSubmit = async () => {
+		this.setState({
+			...this.state,
+			loading: true,
+		});
+		const { cart } = this.props;
+		await cart.forEach((element) => {
+			const quantity = element.qty;
+			const { id, price } = element;
+			this.props.newSale(quantity, price, id);
+		});
+
+		this.setState({
+			...this.state,
+			loading: false,
+		});
+
+		this.props.getAllSupplies();
+		this.props.clearCart()
+	};
+
 	render() {
 		const { auth, supplies, cart } = this.props;
-		const { term } = this.state;
+		const { term, loading } = this.state;
 		const { isAuthenticated } = auth;
 		let grandtotal = 0;
 		if (!isAuthenticated) {
@@ -136,7 +159,8 @@ export class Sales extends Component {
 																	<button
 																		onClick={() => this.handleAdd(supply)}
 																		type="submit"
-																		className="btn btn-gradient-info btn-fw" disabled>
+																		className="btn btn-gradient-info btn-fw"
+																		disabled>
 																		Add
 																	</button>
 																</td>
@@ -171,7 +195,7 @@ export class Sales extends Component {
 												return (
 													<tr key={id}>
 														<td>{supply.name}</td>
-														{supply.qty <= supply.quantity ? (
+														{supply.qty <= supply.available ? (
 															<td>{supply.qty}</td>
 														) : (
 															<td className="text-danger">{supply.qty}</td>
@@ -208,11 +232,16 @@ export class Sales extends Component {
 								</div>
 								<div className="d-flex justify-content-end mt-3">
 									<div className="mr-2">
-										<button
-											type="button"
-											className="btn btn-gradient-success btn-fw">
-											Submit
-										</button>{" "}
+										{loading ? (
+											<CircularProgress />
+										) : (
+											<button
+												type="button"
+												className="btn btn-gradient-success btn-fw"
+												onClick={this.handleSubmit}>
+												Submit
+											</button>
+										)}{" "}
 									</div>
 									{/* <div className="">Space</div> */}
 									<div>
@@ -255,6 +284,7 @@ const mapDispatchToProps = (dispatch) => {
 		adjustQTY: (item) => dispatch(adjustQTY(item)),
 		removeFromCart: (item) => dispatch(removeFromCart(item)),
 		clearCart: () => dispatch(clearCart()),
+		newSale: (quantity, price, id) => dispatch(newSale(quantity, price, id)),
 	};
 };
 

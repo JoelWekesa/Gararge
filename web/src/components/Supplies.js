@@ -5,13 +5,12 @@ import { CircularProgress } from "@material-ui/core";
 import { getAllSupplies, specificSupply } from "../redux/supplies/actions";
 
 export class Supplies extends Component {
-
 	state = {
-		term: ""
-	}
+		term: "",
+	};
 	componentDidMount = async () => {
 		await this.props.getAllSupplies();
-	}
+	};
 
 	handleAdd = async (id) => {
 		await this.props.specificSupply(id);
@@ -19,16 +18,16 @@ export class Supplies extends Component {
 	};
 
 	handleChange = (e) => {
-		const { name, value } = e.target
+		const { name, value } = e.target;
 		this.setState({
 			...this.state,
 			[name]: value,
-		})
-	}
+		});
+	};
 
 	render() {
 		const { auth, supplies } = this.props;
-		const { term } = this.state
+		const { term } = this.state;
 		const { isAuthenticated } = auth;
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
@@ -45,9 +44,9 @@ export class Supplies extends Component {
 									type="text"
 									className="form-control bg-transparent border-0"
 									placeholder="Search supplies"
-									name = "term"
-									value = { term}
-									onChange = {this.handleChange}
+									name="term"
+									value={term}
+									onChange={this.handleChange}
 								/>
 							</div>
 						</form>
@@ -68,39 +67,52 @@ export class Supplies extends Component {
 										</tr>
 									</thead>
 									<tbody>
-										{rows.filter(val => {
-											if(term  === "") {
-												return val
-											} else if (val.name.replaceAll(" ", "").toLowerCase().includes(term.replaceAll(" ", "").toLocaleLowerCase())) {
-												return val
-											}
+										{rows
+											.filter((val) => {
+												if (term === "") {
+													return val;
+												} else if (
+													val.name
+														.replaceAll(" ", "")
+														.toLowerCase()
+														.includes(
+															term.replaceAll(" ", "").toLocaleLowerCase()
+														)
+												) {
+													return val;
+												} else {
+													return val.name
+														.replaceAll(" ", "")
+														.toLowerCase()
+														.includes(
+															term.trim().replaceAll(" ", "").toLowerCase()
+														);
+												}
+											})
+											.map((supply, id) => {
+												return (
+													<tr key={id}>
+														<td>{supply.name}</td>
+														{parseInt(supply.available) === 0 ? (
+															<td className="text-danger">Out of stock</td>
+														) : parseInt(supply.available) < 0 ? (
+															<td className = "text-danger">Out of stock {supply.available}</td>
+														) : (
+															<td>{supply.available}</td>
+														)}
 
-											else {
-												return val.name.replaceAll(" ", "")
-													.toLowerCase()
-													.includes(
-														term.trim().replaceAll(" ", "").toLowerCase()
-													);
-											}
-
-											
-										}).map((supply, id) => {
-											return (
-												<tr key={id}>
-													<td>{supply.name}</td>
-													<td>{supply.available}</td>
-													<td className="text-success"> {supply.price}</td>
-													<td>
-														<button
-															onClick={() => this.handleAdd(supply.id)}
-															type="submit"
-															className="btn btn-gradient-info btn-fw">
-															+ Add
-														</button>
-													</td>
-												</tr>
-											);
-										})}
+														<td className="text-success"> {supply.price}</td>
+														<td>
+															<button
+																onClick={() => this.handleAdd(supply.id)}
+																type="submit"
+																className="btn btn-gradient-info btn-fw">
+																+ Add
+															</button>
+														</td>
+													</tr>
+												);
+											})}
 									</tbody>
 								</table>
 							</div>

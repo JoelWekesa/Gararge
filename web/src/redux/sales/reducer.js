@@ -52,3 +52,42 @@ export const cartReducer = (state = initialState, action) => {
 };
 
 //? End of add to cart
+
+//* Make a new sale
+
+const firstState = {
+	loading: false,
+	sale: {},
+	error: null,
+};
+
+export const saleReducer = (state = firstState, action) => {
+	switch (action.type) {
+		case Types.START_SALE:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.SALE_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				sale: action.payload,
+				error: null,
+			};
+
+		case Types.SALE_FAIL:
+			return {
+				...state,
+				loading: false,
+				sale: {},
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+//* End of make a new sale

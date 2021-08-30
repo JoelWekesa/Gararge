@@ -13,6 +13,7 @@ export class Holder extends Component {
 		const { auth } = this.props;
 		const { staff } = auth;
 		const { admin, super_admin } = staff.user;
+
 		return (
 			<div className="container-scroller">
 				<nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -52,15 +53,15 @@ export class Holder extends Component {
 									className="dropdown-menu navbar-dropdown"
 									aria-labelledby="profileDropdown">
 									<a className="dropdown-item" href="/">
-										<i className="mdi mdi-cached mr-2 text-success"></i>{" "}
-										Activity Log{" "}
+										<i className="mdi mdi-cached mr-2 text-success"></i>
+										Activity Log
 									</a>
 									<div className="dropdown-divider"></div>
 									<a
 										className="dropdown-item"
 										href="/"
 										onClick={this.handleLogout}>
-										<i className="mdi mdi-logout mr-2 text-primary"></i> Signout{" "}
+										<i className="mdi mdi-logout mr-2 text-primary"></i> Signout
 									</a>
 								</div>
 							</li>
@@ -162,8 +163,7 @@ export class Holder extends Component {
 												Event today
 											</h6>
 											<p className="text-gray ellipsis mb-0">
-												{" "}
-												Just a reminder that you have an event today{" "}
+												Just a reminder that you have an event today
 											</p>
 										</div>
 									</a>
@@ -179,8 +179,7 @@ export class Holder extends Component {
 												Settings
 											</h6>
 											<p className="text-gray ellipsis mb-0">
-												{" "}
-												Update dashboard{" "}
+												Update dashboard
 											</p>
 										</div>
 									</a>
@@ -195,10 +194,7 @@ export class Holder extends Component {
 											<h6 className="preview-subject font-weight-normal mb-1">
 												Launch Admin
 											</h6>
-											<p className="text-gray ellipsis mb-0">
-												{" "}
-												New admin wow!{" "}
-											</p>
+											<p className="text-gray ellipsis mb-0">New admin wow!</p>
 										</div>
 									</a>
 									<div className="dropdown-divider"></div>
@@ -240,12 +236,32 @@ export class Holder extends Component {
 							</li>
 
 							{admin || super_admin ? (
-								<li className="nav-item">
-									<a className="nav-link" href="/departments">
-										<span className="menu-title">Departments</span>
-										<i className="mdi mdi-contacts menu-icon"></i>
-									</a>
-								</li>
+								<>
+									<li className="nav-item">
+										<a className="nav-link" href="/departments">
+											<span className="menu-title">Departments</span>
+											<i className="mdi mdi-contacts menu-icon"></i>
+										</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link new" href="/supply/add">
+											<span className="menu-title">New Supply</span>
+											<i className="mdi mdi-new-box menu-icon"></i>
+										</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/supply/all">
+											<span className="menu-title">Existing Supply</span>
+											<i className="mdi mdi-folder-plus menu-icon"></i>
+										</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/sales/all">
+											<span className="menu-title">Sales</span>
+											<i className="mdi mdi-file-send menu-icon"></i>
+										</a>
+									</li>
+								</>
 							) : null}
 							<li className="nav-item">
 								<a className="nav-link" href="pages/forms/basic_elements.html">
@@ -270,105 +286,68 @@ export class Holder extends Component {
 								<a
 									className="nav-link"
 									data-toggle="collapse"
-									href="#management"
+									href="#management-based"
 									aria-expanded="false"
-									aria-controls="management">
+									aria-controls="manager">
 									<span className="menu-title">Management</span>
 									<i className="menu-arrow"></i>
 									<i className="mdi mdi-medical-bag menu-icon"></i>
 								</a>
-								<div className="collapse" id="management">
+								<div className="collapse" id="management-based">
 									<ul className="nav flex-column sub-menu">
 										{super_admin ? (
 											<>
-												<li className="nav-item" id="addstaff">
-													{" "}
-													<a className="nav-link" id="test" href="/staff/add">
-														{" "}
-														Add New Staff{" "}
+												<li className="nav-item">
+													<a className="nav-link" href="/staff/add">
+														Add New Staff
 													</a>
 												</li>
-												<li className="nav-item" id="addadmin">
-													{" "}
+												<li className="nav-item">
 													<a className="nav-link" href="/staff/add">
 														Add admin
 													</a>
 												</li>
 												<li className="nav-item">
-													{" "}
-													<a
-														className="nav-link"
-														href="/staff/add"
-														id="removestaff">
+													<a className="nav-link" href="/staff/add">
 														Remove staff
 													</a>
 												</li>
 												<li className="nav-item">
-													{" "}
 													<a className="nav-link" href="/staff/add">
 														Remove admin
 													</a>
-												</li>{" "}
+												</li>
 											</>
 										) : null}
 
 										{admin || super_admin ? (
 											<>
 												<li className="nav-item">
-													{" "}
-													<a className="nav-link" href="/supply/add">
-														{" "}
-														Add New Supply{" "}
-													</a>
-												</li>
-												<li className="nav-item">
-													{" "}
-													<a className="nav-link" href="/supply/all">
-														{" "}
-														Add to Existing Supply{" "}
-													</a>
-												</li>
-												<li className="nav-item" id="test">
-													{" "}
-													<a className="nav-link" href="/sales/all">
-														{" "}
-														Available for sale{" "}
-													</a>
-												</li>
-												<li className="nav-item">
-													{" "}
 													<a className="nav-link" href="/carwash/add">
-														{" "}
-														Add Car Wash Record{" "}
+														Add Car Wash Record
 													</a>
 												</li>
 												<li className="nav-item">
-													{" "}
 													<a
 														className="nav-link"
 														href="pages/samples/login.html">
-														{" "}
 														View Staff Washes
 													</a>
-												</li>{" "}
+												</li>
 											</>
 										) : null}
 										<li className="nav-item">
-											{" "}
 											<a
 												className="nav-link"
 												href="pages/samples/error-404.html">
-												{" "}
-												404{" "}
+												404
 											</a>
 										</li>
 										<li className="nav-item">
-											{" "}
 											<a
 												className="nav-link"
 												href="pages/samples/error-500.html">
-												{" "}
-												500{" "}
+												500
 											</a>
 										</li>
 									</ul>
@@ -397,15 +376,7 @@ export class Holder extends Component {
 							<footer className="footer">
 								<div className="container-fluid clearfix">
 									<span className="text-muted d-block text-center text-sm-left d-sm-inline-block">
-										Copyright © bootstrapdash.com 2020
-									</span>
-									<span className="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-										{" "}
-										Free{" "}
-										<a href="https://www.bootstrapdash.com/bootstrap-admin-template/">
-											Bootstrap admin templates{" "}
-										</a>{" "}
-										from Bootstrapdash.com
+										Copyright © KARL Motors {new Date().getFullYear()}
 									</span>
 								</div>
 							</footer>
