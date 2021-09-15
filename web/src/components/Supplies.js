@@ -101,7 +101,7 @@ export class Supplies extends Component {
 															<td>{supply.available}</td>
 														)}
 
-														<td className="text-success"> {supply.price}</td>
+														<td className="text-success"> {supply.selling_price}</td>
 														<td>
 															<button
 																onClick={() => this.handleAdd(supply.id)}

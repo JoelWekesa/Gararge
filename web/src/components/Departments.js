@@ -14,6 +14,8 @@ export class Departments extends Component {
 		await this.props.allDepartments();
 	};
 
+
+
 	handleChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({

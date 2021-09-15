@@ -11,6 +11,9 @@ const Supplies = db.define("Supplies", {
 	price: {
 		type: DataTypes.BIGINT,
 	},
+	selling_price: {
+		type: DataTypes.BIGINT,
+	},
 	quantity: {
 		type: DataTypes.BIGINT,
 	},

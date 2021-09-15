@@ -30,7 +30,7 @@ router.get("/all", [admin], async (req, res) => {
 router.post("/add", [admin], async (req, res) => {
 	try {
 		const token = req.headers["x-access-token"];
-		const { name, description, price, quantity, category } = req.body;
+		const { name, description, price, selling_price, quantity, category } = req.body;
 		if (!name) {
 			return res.status(400).json({ message: "Please input product name." });
 		}
@@ -41,6 +41,9 @@ router.post("/add", [admin], async (req, res) => {
 		}
 		if (!price) {
 			return res.status(400).json({ message: "Please input product price." });
+		}
+		if (!selling_price) {
+			return res.status(400).json({ message: "Please input product selling price." });
 		}
 		if (!quantity) {
 			return res
@@ -85,6 +88,7 @@ router.post("/add", [admin], async (req, res) => {
 					name,
 					description,
 					price,
+					selling_price,
 					quantity,
 					category,
 					staff: id,
@@ -115,7 +119,7 @@ router.post("/add", [admin], async (req, res) => {
 
 router.put("/edit/:id", async (req, res) => {
 	try {
-		const { description, price, quantity, category } = req.body;
+		const { description, selling_price, quantity, category } = req.body;
 		const { id } = req.params;
 		const token = req.headers["x-access-token"];
 		await jwt.verify(token, secrets, (err, decoded) => {
@@ -135,7 +139,7 @@ router.put("/edit/:id", async (req, res) => {
 						});
 					}
 
-					if (parseInt(price) <= 0) {
+					if (parseInt(selling_price) <= 0) {
 						return res.status(400).json({
 							message: "Price cannot be less than or equal to zero.",
 						});
@@ -150,7 +154,7 @@ router.put("/edit/:id", async (req, res) => {
 					Supplies.update(
 						{
 							description: description ? description : supply.description,
-							price: price ? price : supply.price,
+							selling_price: selling_price ? selling_price : supply.selling_price,
 							quantity: quantity
 								? parseInt(supply.quantity) + parseInt(quantity)
 								: supply.quantity,

@@ -7,7 +7,7 @@ import { specificSupply, editSupply } from "../redux/supplies/actions";
 export class Supply extends Component {
 	state = {
 		description: "",
-		price: "",
+		selling_price: "",
 		quantity: "",
 		open: false,
 	};
@@ -21,7 +21,7 @@ export class Supply extends Component {
 		this.setState({
 			...this.state,
 			description: product.description,
-			price: product.price,
+			selling_price: product.selling_price,
 			id: product.id,
 		});
 	};
@@ -33,7 +33,7 @@ export class Supply extends Component {
 			this.setState({
 				...this.state,
 				description: product.description,
-				price: product.price,
+				selling_price: product.selling_price,
 				id: product.id,
 			});
 		}
@@ -49,8 +49,8 @@ export class Supply extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
-		const { description, price, id, quantity } = this.state;
-		const supply = { description, price, id, quantity };
+		const { description, selling_price, id, quantity } = this.state;
+		const supply = { description, selling_price, id, quantity };
 		await this.props.editSupply(supply);
 		this.setState({
 			...this.state,
@@ -69,7 +69,7 @@ export class Supply extends Component {
 		const { auth, supply } = this.props;
 		const product = supply.product.supply;
         const { error, loading } = supply
-		const { description, price, quantity, open } = this.state;
+		const { description, selling_price, quantity, open } = this.state;
 		const { isAuthenticated } = auth;
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
@@ -134,8 +134,8 @@ export class Supply extends Component {
 								<input
 									type="number"
 									className="form-control"
-									name="price"
-									value={price}
+									name="selling_price"
+									value={selling_price}
 									onChange={this.handleChange}
 								/>
 							</div>

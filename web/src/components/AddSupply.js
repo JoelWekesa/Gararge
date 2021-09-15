@@ -14,6 +14,7 @@ export class AddSupply extends Component {
 		name: "",
 		description: "",
 		price: "",
+		selling_price: "",
 		quantity: "",
 		category: "",
 		categories: [],
@@ -40,6 +41,7 @@ export class AddSupply extends Component {
 			name: "",
 			description: "",
 			price: "",
+			selling_price: "",
 			quantity: "",
 			category: "",
 		});
@@ -47,9 +49,9 @@ export class AddSupply extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
-		const { name, description, price, quantity, category } = this.state;
+		const { name, description, price, quantity, category, selling_price } = this.state;
 
-		await this.props.addSupply(name, description, price, quantity, category);
+		await this.props.addSupply(name, description, price, selling_price, quantity, category);
 
 		this.setState({
 			...this.state,
@@ -73,13 +75,14 @@ export class AddSupply extends Component {
 			name: "",
 			description: "",
 			price: "",
+			selling_price: "",
 			quantity: "",
 			category: "",
 		});
 	};
 
 	render() {
-		const { open, name, description, price, quantity, category, } =
+		const { open, name, description, price, selling_price, quantity, category, } =
 			this.state;
 		const { auth, newsupply } = this.props;
 		const { categories } = this.props.categories;
@@ -110,7 +113,6 @@ export class AddSupply extends Component {
 						<Modal.Body>
 							<h4>{name} was added.</h4>
 							<p>{description}</p>
-							
 						</Modal.Body>
 						<Modal.Footer>
 							<button
@@ -142,7 +144,7 @@ export class AddSupply extends Component {
 							{" "}
 							Adding new supplies has never been this easy.{" "}
 						</p>
-						<form className="forms-sample" id = "form">
+						<form className="forms-sample" id="form">
 							<div className="form-group">
 								<label htmlFor="name">Name</label>
 								<input
@@ -175,8 +177,21 @@ export class AddSupply extends Component {
 									type="number"
 									className="form-control"
 									id="price"
-									placeholder="Enter selling price of supply."
+									placeholder="Enter buying price of supply."
 									value={price}
+									onChange={this.handleChange}
+								/>
+							</div>
+
+							<div className="form-group">
+								<label htmlFor="price">Selling Price</label>
+								<input
+									name="selling_price"
+									type="number"
+									className="form-control"
+									id="price"
+									placeholder="Enter selling price of supply."
+									value={selling_price}
 									onChange={this.handleChange}
 								/>
 							</div>
@@ -240,8 +255,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addSupply: (name, description, price, quantity, category) =>
-			dispatch(addSupply(name, description, price, quantity, category)),
+		addSupply: (name, description, price, selling_price, quantity, category) =>
+			dispatch(addSupply(name, description, price, selling_price, quantity, category)),
 		allCategories: () => dispatch(allCategories()),
 	};
 };

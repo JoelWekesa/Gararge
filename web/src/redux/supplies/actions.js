@@ -25,11 +25,11 @@ const addFail = (message) => {
 	};
 };
 
-export const addSupply = (name, description, price, quantity, category) => {
+export const addSupply = (name, description, price, selling_price, quantity, category) => {
 	return (dispatch, getState) => {
 		dispatch(startAdd());
 		const url = `${baseUrl}/supplies/add`;
-		const body = { name, description, price, quantity, category };
+		const body = { name, description, price, selling_price, quantity, category };
 		axios
 			.post(url, body, configHelper(getState))
 			.then((res) => {
@@ -154,7 +154,7 @@ export const editSupply = (supply) => {
 		const url = `${baseUrl}/supplies/edit/${supply.id}`;
 		const body = {
 			description: supply.description,
-			price: supply.price,
+			selling_price: supply.selling_price,
 			quantity: supply.quantity,
 		};
 

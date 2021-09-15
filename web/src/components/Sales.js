@@ -15,6 +15,7 @@ export class Sales extends Component {
 	state = {
 		term: "",
 		loading: false,
+		price: 0,
 	};
 	componentDidMount = async () => {
 		await this.props.getAllSupplies();
@@ -52,8 +53,8 @@ export class Sales extends Component {
 		const { cart } = this.props;
 		await cart.forEach((element) => {
 			const quantity = element.qty;
-			const { id, price } = element;
-			this.props.newSale(quantity, price, id);
+			const { id, selling_price } = element;
+			this.props.newSale(quantity, selling_price, id);
 		});
 
 		this.setState({
@@ -62,12 +63,12 @@ export class Sales extends Component {
 		});
 
 		this.props.getAllSupplies();
-		this.props.clearCart()
+		this.props.clearCart();
 	};
 
 	render() {
 		const { auth, supplies, cart } = this.props;
-		const { term, loading } = this.state;
+		const { term, loading, price } = this.state;
 		const { isAuthenticated } = auth;
 		let grandtotal = 0;
 		if (!isAuthenticated) {
@@ -75,7 +76,7 @@ export class Sales extends Component {
 		}
 
 		for (let index = 0; index < cart.length; index++) {
-			grandtotal += parseInt(cart[index].price) * parseInt(cart[index].qty);
+			grandtotal += parseInt(cart[index].selling_price) * parseInt(cart[index].qty);
 		}
 
 		try {
@@ -144,7 +145,7 @@ export class Sales extends Component {
 															) : (
 																<td className="text-danger">Out of stock</td>
 															)}
-															<td className="text-success"> {supply.price}</td>
+															<td className="text-success"> {supply.selling_price}</td>
 															{supply.available > 0 ? (
 																<td>
 																	<button
@@ -200,9 +201,10 @@ export class Sales extends Component {
 														) : (
 															<td className="text-danger">{supply.qty}</td>
 														)}
-														<td> {supply.price}</td>
+														<td> {supply.selling_price}</td>
+														
 														<td className="text-success">
-															{parseInt(supply.qty) * parseInt(supply.price)}
+															{parseInt(supply.qty) * parseInt(supply.selling_price)}
 														</td>
 														<td>
 															<button
