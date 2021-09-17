@@ -81,12 +81,13 @@ export class Holder extends Component {
 									<i className="mdi mdi-power"></i>
 								</a>
 							</li>
-							{admin || super_admin ? 
-							<li className="nav-item nav-settings d-none d-lg-block">
-								<a className="nav-link" href="/sales/all">
-									<i className="mdi mdi-cart"></i> {grandtotal}
-								</a>
-							</li> : null}
+							{admin || super_admin ? (
+								<li className="nav-item nav-settings d-none d-lg-block">
+									<a className="nav-link" href="/sales/all">
+										<i className="mdi mdi-cart"></i> {grandtotal}
+									</a>
+								</li>
+							) : null}
 						</ul>
 						<button
 							className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -223,7 +224,7 @@ export class Holder extends Component {
 										<h6 className="font-weight-normal mb-3">Projects</h6>
 									</div>
 									<button className="btn btn-block btn-lg btn-gradient-primary mt-4">
-										+ Add a project
+										+ New Job
 									</button>
 									<div className="mt-4">
 										<div className="border-bottom">

@@ -65,7 +65,7 @@ export class Home extends Component {
 							<div className="card bg-gradient-danger card-img-holder text-white">
 								<div className="card-body">
 									<h4 className="font-weight-normal mb-3">
-										Weekly Sales{" "}
+										Monthly Sales{" "}
 										<i className="mdi mdi-chart-line mdi-24px float-right"></i>
 									</h4>
 									<h2 className="mb-5">KSH {weekly.amount.total}</h2>

@@ -105,7 +105,7 @@ export const weeklyFailure = (message) => {
 export const getWeeklySales = () => {
 	return (dispatch, getState) => {
 		dispatch(startWeekly());
-		const url = `${baseUrl}/sales/weekly`;
+		const url = `${baseUrl}/sales/monthly`;
 		axios
 			.get(url, configHelper(getState))
 			.then((res) => {

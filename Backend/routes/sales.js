@@ -26,23 +26,22 @@ router.get("/all", [admin], async (req, res) => {
 	}
 });
 
-router.get("/weekly", [admin], (req, res) => {
+router.get("/monthly", [admin], (req, res) => {
 	try {
 		Sales.findAll({
 			where: {
-				createdAt: {
-					[Op.lt]: new Date(),
-					[Op.gt]: new Date(new Date() - 24 * 7 * 60 * 60 * 1000) ,
-				},
+				
+				[Op.and] : [{ month: new Date().getMonth()}, {year: new Date().getFullYear()}]
+				
 			},
 		})
 			.then((data) => {
-				total = 0
+				total = 0;
 				data.forEach((item) => {
-					total += (parseInt(item.price) * parseInt(item.quantity))
-				})
+					total += parseInt(item.price) * parseInt(item.quantity);
+				});
 
-				return res.status(200).json({ total})
+				return res.status(200).json({ total });
 			})
 			.catch((err) => {
 				return res.status(400).json({ error: err.message });
@@ -50,7 +49,7 @@ router.get("/weekly", [admin], (req, res) => {
 	} catch (err) {
 		return res.status(500).json({ message: err.message });
 	}
-})
+});
 
 //? Make a sale
 
@@ -78,8 +77,6 @@ router.post("/add/:id", [admin], async (req, res) => {
 					});
 				}
 
-				
-
 				available += supply.available;
 
 				await jwt.verify(token, secrets, async (err, decode) => {
@@ -95,6 +92,8 @@ router.post("/add/:id", [admin], async (req, res) => {
 						price,
 						staff,
 						quantity,
+						month: new Date().getMonth(),
+						year: new Date().getFullYear(),
 					})
 						.then(async (sale) => {
 							await Supplies.update(
