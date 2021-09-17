@@ -14,3 +14,11 @@ export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const CLEAR_CART = "CLEAR_CART";
 
 //? End of add to cart
+
+//* Weekly sales 
+
+export const START_WEEKLY = "START_WEEKLY";
+export const WEEKLY_SUCCESS = "WEEKLY_SUCCESS";
+export const WEEKLY_FAIL = "WEEKLY_FAIL";
+
+//* End of weekly sales 

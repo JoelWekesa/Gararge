@@ -91,3 +91,42 @@ export const saleReducer = (state = firstState, action) => {
 };
 
 //* End of make a new sale
+
+/** Start of get weekly sales */
+
+const alphaState = {
+	loading: false,
+	amount: 0,
+	error: null,
+};
+
+export const weeklySalesReducer = (state = alphaState, action) => {
+	switch (action.type) {
+		case Types.START_WEEKLY:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.WEEKLY_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				amount: action.payload,
+				error: null,
+			};
+
+		case Types.WEEKLY_FAIL:
+			return {
+				...state,
+				loading: false,
+				amount: 0,
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+/** End of get weekly sales */

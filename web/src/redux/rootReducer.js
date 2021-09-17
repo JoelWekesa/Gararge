@@ -14,8 +14,8 @@ import {
 	editProductReducer,
 } from "./supplies/reducer";
 import { categoriesReducer } from "./categories/reducer";
-import { washReducer, addWashReducer } from "./carwash/reducer";
-import { cartReducer, saleReducer } from "./sales/reducer";
+import { washReducer, addWashReducer, weeklyWashesReducer } from "./carwash/reducer";
+import { cartReducer, saleReducer, weeklySalesReducer } from "./sales/reducer";
 
 export const rootReducer = combineReducers({
 	auth: loginReducer,
@@ -33,4 +33,6 @@ export const rootReducer = combineReducers({
 	editsupply: editProductReducer,
 	cart: cartReducer,
 	sale: saleReducer,
+	weekly: weeklySalesReducer,
+	washes: weeklyWashesReducer,
 });

@@ -79,3 +79,44 @@ export const newSale = (quantity, price, id) => {
 };
 
 //* End of make a sale
+
+/** Start of Weekly sales */
+
+export const startWeekly = () => {
+	return {
+		type: Types.START_WEEKLY,
+	};
+};
+
+export const weeklySuccess = (data) => {
+	return {
+		type: Types.WEEKLY_SUCCESS,
+		payload: data,
+	};
+};
+
+export const weeklyFailure = (message) => {
+	return {
+		type: Types.WEEKLY_FAIL,
+		payload: message,
+	};
+};
+
+export const getWeeklySales = () => {
+	return (dispatch, getState) => {
+		dispatch(startWeekly());
+		const url = `${baseUrl}/sales/weekly`;
+		axios
+			.get(url, configHelper(getState))
+			.then((res) => {
+				const { data } = res;
+				dispatch(weeklySuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(weeklyFailure(message));
+			});
+	};
+};
+
+/** End of weekly sales */

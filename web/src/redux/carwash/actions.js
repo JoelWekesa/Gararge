@@ -79,3 +79,45 @@ export const addWashRecord = (type, plates, staff) => {
 			});
 	};
 };
+
+/** Start of Weekly washes */
+
+export const startWeekly = () => {
+	return {
+		type: Types.START_WEEKLY_WASHES,
+	};
+};
+
+export const weeklySuccess = (data) => {
+	return {
+		type: Types.WEEKLY_WASH_SUCCESS,
+		payload: data,
+	};
+};
+
+export const weeklyFailure = (message) => {
+	return {
+		type: Types.WEEKLY_WASH_FAIL,
+		payload: message,
+	};
+};
+
+export const getWeeklyWashes = () => {
+	return (dispatch, getState) => {
+		dispatch(startWeekly());
+		const url = `${baseUrl}/carwashes/weekly`;
+		axios
+			.get(url, configHelper(getState))
+			.then((res) => {
+				const { data } = res;
+				console.log(data);
+				dispatch(weeklySuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(weeklyFailure(message));
+			});
+	};
+};
+
+/** End of weekly sales */

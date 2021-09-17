@@ -1,402 +1,229 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { CircularProgress } from "@material-ui/core";
 import { getAllStaff } from "../redux/staff/actions";
+import { getWeeklySales } from "../redux/sales/actions.";
+import { getWeeklyWashes } from "../redux/carwash/actions";
+import { getAllSupplies, specificSupply } from "../redux/supplies/actions";
+import { addToCart } from "../redux/sales/actions.";
 
 export class Home extends Component {
-	componentDidMount = () => {
-		this.props.getAllStaff();
+	state = {
+		term: "",
+	};
+	componentDidMount = async () => {
+		await this.props.getAllStaff();
+		await this.props.getWeeklySales();
+		await this.props.getWeeklyWashes();
+		await this.props.getAllSupplies();
 	};
 
 	handleChange = (e) => {
-		e.preventDefault();
 		const { name, value } = e.target;
 		this.setState({
-			...this.state({
-				[name]: value,
-			}),
+			...this.state,
+			[name]: value,
 		});
 	};
 
+	handleAdd = (item) => {
+		this.props.addToCart(item);
+	};
+
 	render() {
-		const { auth } = this.props;
+		const { auth, weekly, washes, supplies } = this.props;
 		const { isAuthenticated } = auth;
+		const { term } = this.state;
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
 		}
-		return (
-			<div>
-				<div className="page-header">
-					<h3 className="page-title">
-						<span className="page-title-icon bg-gradient-primary text-white mr-2">
-							<i className="mdi mdi-home"></i>
-						</span>{" "}
-						Dashboard
-					</h3>
-					<nav aria-label="breadcrumb">
-						<ul className="breadcrumb">
-							<li className="breadcrumb-item active" aria-current="page">
-								<span></span>Overview{" "}
-								<i className="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				<div className="row">
-					<div className="col-md-4 stretch-card grid-margin">
-						<div className="card bg-gradient-danger card-img-holder text-white">
-							<div className="card-body">
-								<h4 className="font-weight-normal mb-3">
-									Weekly Sales{" "}
-									<i className="mdi mdi-chart-line mdi-24px float-right"></i>
-								</h4>
-								<h2 className="mb-5">$ 15,0000</h2>
-								<h6 className="card-text">Increased by 60%</h6>
+
+		try {
+			const { rows } = supplies.products.supplies;
+
+			return (
+				<div>
+					<div className="page-header">
+						<h3 className="page-title">
+							<span className="page-title-icon bg-gradient-primary text-white mr-2">
+								<i className="mdi mdi-home"></i>
+							</span>{" "}
+							Dashboard
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ul className="breadcrumb">
+								<li className="breadcrumb-item active" aria-current="page">
+									<span></span>Overview{" "}
+									<i className="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div className="row">
+						<div className="col-md-4 stretch-card grid-margin">
+							<div className="card bg-gradient-danger card-img-holder text-white">
+								<div className="card-body">
+									<h4 className="font-weight-normal mb-3">
+										Weekly Sales{" "}
+										<i className="mdi mdi-chart-line mdi-24px float-right"></i>
+									</h4>
+									<h2 className="mb-5">KSH {weekly.amount.total}</h2>
+									<h6 className="card-text">Car part sales</h6>
+								</div>
+							</div>
+						</div>
+						<div className="col-md-4 stretch-card grid-margin">
+							<div className="card bg-gradient-info card-img-holder text-white">
+								<div className="card-body">
+									<h4 className="font-weight-normal mb-3">
+										Car wash{" "}
+										<i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+									</h4>
+									<h2 className="mb-5">KSH {washes.amount.total}</h2>
+									<h6 className="card-text">Washes this week</h6>
+								</div>
+							</div>
+						</div>
+						<div className="col-md-4 stretch-card grid-margin">
+							<div className="card bg-gradient-success card-img-holder text-white">
+								<div className="card-body">
+									<h4 className="font-weight-normal mb-3">
+										Visitors Online{" "}
+										<i className="mdi mdi-diamond mdi-24px float-right"></i>
+									</h4>
+									<h2 className="mb-5">95,5741</h2>
+									<h6 className="card-text">Increased by 5%</h6>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div className="col-md-4 stretch-card grid-margin">
-						<div className="card bg-gradient-info card-img-holder text-white">
-							<div className="card-body">
-								<h4 className="font-weight-normal mb-3">
-									Weekly Orders{" "}
-									<i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-								</h4>
-								<h2 className="mb-5">45,6334</h2>
-								<h6 className="card-text">Decreased by 10%</h6>
-							</div>
-						</div>
-					</div>
-					<div className="col-md-4 stretch-card grid-margin">
-						<div className="card bg-gradient-success card-img-holder text-white">
-							<div className="card-body">
-								<h4 className="font-weight-normal mb-3">
-									Visitors Online{" "}
-									<i className="mdi mdi-diamond mdi-24px float-right"></i>
-								</h4>
-								<h2 className="mb-5">95,5741</h2>
-								<h6 className="card-text">Increased by 5%</h6>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-12 grid-margin">
-						<div className="card">
-							<div className="card-body">
-								<h4 className="card-title">Recent Tickets</h4>
-								<div className="table-responsive">
-									<table className="table">
-										<thead>
-											<tr>
-												<th> Assignee </th>
-												<th> Subject </th>
-												<th> Status </th>
-												<th> Last Update </th>
-												<th> Tracking ID </th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>
-													<img
-														src="assets/images/faces/face1.jpg"
-														className="mr-2"
-														alt="missing"
-													/>{" "}
-													David Grey
-												</td>
-												<td> Fund is not recieved </td>
-												<td>
-													<label className="badge badge-gradient-success">
-														DONE
-													</label>
-												</td>
-												<td> Dec 5, 2017 </td>
-												<td> WD-12345 </td>
-											</tr>
-											<tr>
-												<td>
-													<img
-														src="assets/images/faces/face2.jpg"
-														className="mr-2"
-														alt="missing"
-													/>{" "}
-													Stella Johnson
-												</td>
-												<td> High loading time </td>
-												<td>
-													<label className="badge badge-gradient-warning">
-														PROGRESS
-													</label>
-												</td>
-												<td> Dec 12, 2017 </td>
-												<td> WD-12346 </td>
-											</tr>
-											<tr>
-												<td>
-													<img
-														src="assets/images/faces/face3.jpg"
-														className="mr-2"
-														alt="missing"
-													/>{" "}
-													Marina Michel
-												</td>
-												<td> Website down for one week </td>
-												<td>
-													<label className="badge badge-gradient-info">
-														ON HOLD
-													</label>
-												</td>
-												<td> Dec 16, 2017 </td>
-												<td> WD-12347 </td>
-											</tr>
-											<tr>
-												<td>
-													<img
-														src="assets/images/faces/face4.jpg"
-														className="mr-2"
-														alt="missing"
-													/>{" "}
-													John Doe
-												</td>
-												<td> Loosing control on server </td>
-												<td>
-													<label className="badge badge-gradient-danger">
-														REJECTED
-													</label>
-												</td>
-												<td> Dec 3, 2017 </td>
-												<td> WD-12348 </td>
-											</tr>
-										</tbody>
-									</table>
+					<div className="row">
+						<div className="col-12 grid-margin">
+							<div className="card">
+								<form>
+									<div className="input-group">
+										<input
+											type="text"
+											className="form-control bg-transparent border-0"
+											placeholder="Search supplies"
+											name="term"
+											value={term}
+											onChange={this.handleChange}
+										/>
+									</div>
+								</form>
+								<div className="card-body">
+									<h4 className="card-title">Available for sales</h4>
+									<p className="card-description">
+										{" "}
+										A breakdown of all available supplies available for sale
+									</p>
+									<div className="table-responsive">
+										<table className="table table-hover ">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Quantity Available</th>
+													<th>Price</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												{rows
+													.filter((val) => {
+														if (term === "") {
+															return val;
+														} else if (
+															val.name
+																.replaceAll(" ", "")
+																.toLowerCase()
+																.includes(
+																	term.replaceAll(" ", "").toLocaleLowerCase()
+																)
+														) {
+															return val;
+														} else {
+															return val.name
+																.replaceAll(" ", "")
+																.toLowerCase()
+																.includes(
+																	term.trim().replaceAll(" ", "").toLowerCase()
+																);
+														}
+													})
+													.map((supply, id) => {
+														return (
+															<tr key={id}>
+																<td>{supply.name}</td>
+																{supply.available > 0 ? (
+																	<td>{supply.available}</td>
+																) : (
+																	<td className="text-danger">Out of stock</td>
+																)}
+																<td className="text-success">
+																	{" "}
+																	{supply.selling_price}
+																</td>
+																{supply.available > 0 ? (
+																	<td>
+																		<button
+																			onClick={() => this.handleAdd(supply)}
+																			type="submit"
+																			className="btn btn-gradient-info btn-fw">
+																			Add
+																		</button>
+																	</td>
+																) : (
+																	<td>
+																		<button
+																			onClick={() => this.handleAdd(supply)}
+																			type="submit"
+																			className="btn btn-gradient-info btn-fw"
+																			disabled>
+																			Add
+																		</button>
+																	</td>
+																)}
+															</tr>
+														);
+													})}
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				<div className="row">
-					<div className="col-md-7 grid-margin stretch-card">
-						<div className="card">
-							<div className="card-body">
-								<h4 className="card-title">Project Status</h4>
-								<div className="table-responsive">
-									<table className="table">
-										<thead>
-											<tr>
-												<th> # </th>
-												<th> Name </th>
-												<th> Due Date </th>
-												<th> Progress </th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td> 1 </td>
-												<td> Herman Beck </td>
-												<td> May 15, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-success"
-															role="progressbar"
-															style={{ width: "75%" }}
-															aria-valuenow="25"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td> 2 </td>
-												<td> Messsy Adam </td>
-												<td> Jul 01, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-danger"
-															role="progressbar"
-															style={{ width: "75%" }}
-															aria-valuenow="75"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td> 3 </td>
-												<td> John Richards </td>
-												<td> Apr 12, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-warning"
-															role="progressbar"
-															style={{ width: "90%" }}
-															aria-valuenow="90"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td> 4 </td>
-												<td> Peter Meggik </td>
-												<td> May 15, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-primary"
-															role="progressbar"
-															style={{ width: "50%" }}
-															aria-valuenow="50"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td> 5 </td>
-												<td> Edward </td>
-												<td> May 03, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-danger"
-															role="progressbar"
-															style={{ width: "35%" }}
-															aria-valuenow="35"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<td> 5 </td>
-												<td> Ronald </td>
-												<td> Jun 05, 2015 </td>
-												<td>
-													<div className="progress">
-														<div
-															className="progress-bar bg-gradient-info"
-															role="progressbar"
-															style={{ width: "65%" }}
-															aria-valuenow="65"
-															aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="col-md-5 grid-margin stretch-card">
-						<div className="card">
-							<div className="card-body">
-								<h4 className="card-title text-white">Todo</h4>
-								<div className="add-items d-flex">
-									<input
-										type="text"
-										className="form-control todo-list-input"
-										placeholder="What do you need to do today?"
-									/>
-									<button
-										className="add btn btn-gradient-primary font-weight-bold todo-list-add-btn"
-										id="add-task">
-										Add
-									</button>
-								</div>
-								<div className="list-wrapper">
-									<ul className="d-flex flex-column-reverse todo-list todo-list-custom">
-										<li>
-											<div className="form-check">
-												<label className="form-check-label">
-													<input className="checkbox" type="checkbox" /> Meeting
-													with Alisa{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-										<li className="completed">
-											<div className="form-check">
-												<label className="form-check-label">
-													<input
-														className="checkbox"
-														type="checkbox"
-														onChange={this.handleChange}
-														checked
-													/>{" "}
-													Call John{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-										<li>
-											<div className="form-check">
-												<label className="form-check-label">
-													<input className="checkbox" type="checkbox" /> Create
-													invoice{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-										<li>
-											<div className="form-check">
-												<label className="form-check-label">
-													<input className="checkbox" type="checkbox" /> Print
-													Statements{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-										<li className="completed">
-											<div className="form-check">
-												<label className="form-check-label">
-													<input
-														className="checkbox"
-														type="checkbox"
-														onChange={this.handleChange}
-														checked
-													/>{" "}
-													Prepare for presentation{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-										<li>
-											<div className="form-check">
-												<label className="form-check-label">
-													<input className="checkbox" type="checkbox" /> Pick up
-													kids from school{" "}
-												</label>
-											</div>
-											<i className="remove mdi mdi-close-circle-outline"></i>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+			);
+		} catch (error) {
+			return (
+				<div className="container mx-auto mb-3">
+					<CircularProgress />
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
+		weekly: state.weekly,
+		washes: state.washes,
+		supplies: state.supplies,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getAllStaff: () => dispatch(getAllStaff()),
+		getWeeklySales: () => dispatch(getWeeklySales()),
+		getWeeklyWashes: () => dispatch(getWeeklyWashes()),
+		getAllSupplies: () => dispatch(getAllSupplies()),
+		specificSupply: (id) => dispatch(specificSupply(id)),
+		addToCart: (item) => dispatch(addToCart(item)),
 	};
 };
 

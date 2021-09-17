@@ -10,9 +10,16 @@ export class Holder extends Component {
 	};
 
 	render() {
-		const { auth } = this.props;
+		const { auth, cart } = this.props;
 		const { staff } = auth;
 		const { admin, super_admin } = staff.user;
+
+		let grandtotal = 0;
+
+		for (let index = 0; index < cart.length; index++) {
+			grandtotal +=
+				parseInt(cart[index].selling_price) * parseInt(cart[index].qty);
+		}
 
 		return (
 			<div className="container-scroller">
@@ -66,143 +73,6 @@ export class Holder extends Component {
 								</div>
 							</li>
 
-							<li className="nav-item d-none d-lg-block full-screen-link">
-								<a href="/" className="nav-link">
-									<i className="mdi mdi-fullscreen" id="fullscreen-button"></i>
-								</a>
-							</li>
-
-							<li className="nav-item dropdown">
-								<a
-									className="nav-link count-indicator dropdown-toggle"
-									id="messageDropdown"
-									href="/"
-									data-toggle="dropdown"
-									aria-expanded="false">
-									<i className="mdi mdi-email-outline"></i>
-									<span className="count-symbol bg-warning"></span>
-								</a>
-								<div
-									className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-									aria-labelledby="messageDropdown">
-									<h6 className="p-3 mb-0">Messages</h6>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<img
-												src="../assets/logo.png"
-												alt="missing"
-												className="profile-pic"
-											/>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-												Mark send you a message
-											</h6>
-											<p className="text-gray mb-0"> 1 Minutes ago </p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<img
-												src="/assets/images/faces/face2.jpg"
-												alt="missing"
-												className="profile-pic"
-											/>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-												Cregh send you a message
-											</h6>
-											<p className="text-gray mb-0"> 15 Minutes ago </p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<img
-												src="/assets/images/faces/face3.jpg"
-												alt="missing"
-												className="profile-pic"
-											/>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-												Profile picture updated
-											</h6>
-											<p className="text-gray mb-0"> 18 Minutes ago </p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<h6 className="p-3 mb-0 text-center">4 new messages</h6>
-								</div>
-							</li>
-							<li className="nav-item dropdown">
-								<a
-									className="nav-link count-indicator dropdown-toggle"
-									id="notificationDropdown"
-									href="/"
-									data-toggle="dropdown">
-									<i className="mdi mdi-bell-outline"></i>
-									<span className="count-symbol bg-danger"></span>
-								</a>
-								<div
-									className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-									aria-labelledby="notificationDropdown">
-									<h6 className="p-3 mb-0">Notifications</h6>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<div className="preview-icon bg-success">
-												<i className="mdi mdi-calendar"></i>
-											</div>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject font-weight-normal mb-1">
-												Event today
-											</h6>
-											<p className="text-gray ellipsis mb-0">
-												Just a reminder that you have an event today
-											</p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<div className="preview-icon bg-warning">
-												<i className="mdi mdi-settings"></i>
-											</div>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject font-weight-normal mb-1">
-												Settings
-											</h6>
-											<p className="text-gray ellipsis mb-0">
-												Update dashboard
-											</p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<a href="/" className="dropdown-item preview-item">
-										<div className="preview-thumbnail">
-											<div className="preview-icon bg-info">
-												<i className="mdi mdi-link-variant"></i>
-											</div>
-										</div>
-										<div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-											<h6 className="preview-subject font-weight-normal mb-1">
-												Launch Admin
-											</h6>
-											<p className="text-gray ellipsis mb-0">New admin wow!</p>
-										</div>
-									</a>
-									<div className="dropdown-divider"></div>
-									<h6 className="p-3 mb-0 text-center">
-										See all notifications
-									</h6>
-								</div>
-							</li>
 							<li className="nav-item nav-logout d-none d-lg-block">
 								<a
 									className="nav-link"
@@ -211,11 +81,12 @@ export class Holder extends Component {
 									<i className="mdi mdi-power"></i>
 								</a>
 							</li>
+							{admin || super_admin ? 
 							<li className="nav-item nav-settings d-none d-lg-block">
-								<a className="nav-link" href="/">
-									<i className="mdi mdi-format-line-spacing"></i>
+								<a className="nav-link" href="/sales/all">
+									<i className="mdi mdi-cart"></i> {grandtotal}
 								</a>
-							</li>
+							</li> : null}
 						</ul>
 						<button
 							className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
@@ -255,10 +126,20 @@ export class Holder extends Component {
 											<i className="mdi mdi-folder-plus menu-icon"></i>
 										</a>
 									</li>
+								</>
+							) : null}
+							{admin || super_admin ? (
+								<>
 									<li className="nav-item">
-										<a className="nav-link" href="/sales/all">
-											<span className="menu-title">Sales</span>
-											<i className="mdi mdi-file-send menu-icon"></i>
+										<a className="nav-link" href="/carwash/add">
+											<span className="menu-title">Add Wash</span>
+											<i className="mdi mdi-car-wash menu-icon"></i>
+										</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="pages/samples/login.html">
+											<span className="menu-title">View Washes</span>
+											<i className="mdi mdi-car-wash menu-icon"></i>
 										</a>
 									</li>
 								</>
@@ -319,23 +200,6 @@ export class Holder extends Component {
 												</li>
 											</>
 										) : null}
-
-										{admin || super_admin ? (
-											<>
-												<li className="nav-item">
-													<a className="nav-link" href="/carwash/add">
-														Add Car Wash Record
-													</a>
-												</li>
-												<li className="nav-item">
-													<a
-														className="nav-link"
-														href="pages/samples/login.html">
-														View Staff Washes
-													</a>
-												</li>
-											</>
-										) : null}
 										<li className="nav-item">
 											<a
 												className="nav-link"
@@ -391,6 +255,7 @@ export class Holder extends Component {
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
+		cart: state.cart.cart,
 	};
 };
 

@@ -21,6 +21,16 @@ export class Sales extends Component {
 		await this.props.getAllSupplies();
 	};
 
+	componentDidUpdate = async (prevProps, prevState) => {
+		const { cart } = this.props;
+		if(prevProps.cart !== cart) {
+			console.log("Working")
+			console.log("Cart", cart)
+			console.log("Prop", prevProps.cart)
+			await this.props.getAllSupplies();
+		}
+	}
+
 	handleAdd = (item) => {
 		this.props.addToCart(item);
 	};
@@ -62,13 +72,13 @@ export class Sales extends Component {
 			loading: false,
 		});
 
-		this.props.getAllSupplies();
+		// this.props.getAllSupplies();
 		this.props.clearCart();
 	};
 
 	render() {
 		const { auth, supplies, cart } = this.props;
-		const { term, loading, price } = this.state;
+		const { term, loading } = this.state;
 		const { isAuthenticated } = auth;
 		let grandtotal = 0;
 		if (!isAuthenticated) {
@@ -83,7 +93,7 @@ export class Sales extends Component {
 			const { rows } = supplies.products.supplies;
 			return (
 				<div className="row">
-					<div className="col-md-7 grid-margin stretch-card">
+					<div className="col-md-5 grid-margin stretch-card">
 						<div className="card">
 							<form>
 								<div className="input-group">
@@ -175,7 +185,7 @@ export class Sales extends Component {
 							</div>
 						</div>
 					</div>
-					<div className="col-md-5 grid-margin stretch-card">
+					<div className="col-md-7 grid-margin stretch-card">
 						<div className="card">
 							<div className="card-body">
 								<h4 className="card-title">Items in cart</h4>

@@ -63,3 +63,43 @@ export const addWashReducer = (state = startState, action) => {
 			return state;
 	}
 };
+
+
+/** Start of get weekly sales */
+
+const alphaState = {
+	loading: false,
+	amount: 0,
+	error: null,
+};
+
+export const weeklyWashesReducer = (state = alphaState, action) => {
+	switch (action.type) {
+		case Types.START_WEEKLY_WASHES:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.WEEKLY_WASH_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				amount: action.payload,
+				error: null,
+			};
+
+		case Types.WEEKLY_WASH_FAIL:
+			return {
+				...state,
+				loading: false,
+				amount: 0,
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+/** End of get weekly sales */

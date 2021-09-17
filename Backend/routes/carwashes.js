@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { Carwashes } = require("../models/Carwashes");
 const { Washprices } = require("../models/Washprices");
 const { admin } = require("../middleware/admin/check")
+const { Op } = require("sequelize")
 
 const router = Router();
 
@@ -63,6 +64,36 @@ router.get("/all", (req, res) => {
 		return res.status(500).json({ message: err.message });
 	}
 });
+
+/**Get weekly car wash */
+
+router.get("/weekly", [admin], (req, res) => {
+	try {
+		Carwashes.findAll({
+			where: {
+				createdAt: {
+					[Op.lt]: new Date(),
+					[Op.gt]: new Date(new Date() - 24 * 7 * 60 * 60 * 1000),
+				},
+			},
+		})
+			.then((data) => {
+				total = 0;
+				data.forEach((item) => {
+					total += parseInt(item.price);
+				});
+
+				return res.status(200).json({ total });
+			})
+			.catch((err) => {
+				return res.status(400).json({ error: err.message });
+			});
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
+	}
+});
+
+/**End of weekly car wash */
 
 //? All carwashes gross price
 
