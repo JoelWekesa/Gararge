@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { CircularProgress } from "@material-ui/core";
 import { getAllStaff } from "../redux/staff/actions";
 import { getWeeklySales } from "../redux/sales/actions.";
 import { getWeeklyWashes } from "../redux/carwash/actions";
@@ -37,8 +38,6 @@ export class Home extends Component {
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
 		}
-
-		
 
 		try {
 			const { rows } = supplies.products.supplies;
@@ -199,10 +198,10 @@ export class Home extends Component {
 				</div>
 			);
 		} catch (error) {
-			return ( 
-				<Redirect to="/" />
-			);
-		}
+			return <div className="mt-5 mb-5">
+				<CircularProgress />
+			</div>
+		} 
 	}
 }
 

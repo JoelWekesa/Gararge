@@ -4,6 +4,7 @@ import { CircularProgress } from "@material-ui/core";
 import Loader from "./Loader";
 import Alert from "react-bootstrap/Alert";
 import { userLogin } from "../redux/auth/actions";
+import { getAllSupplies } from "../redux/supplies/actions";
 
 export class Login extends Component {
 	state = {
@@ -24,6 +25,7 @@ export class Login extends Component {
 		e.preventDefault();
 		const { username, password } = this.state;
 		this.props.userLogin(username, password);
+		this.props.getAllSupplies()
 
 		this.setState({
 			...this.state,
@@ -114,6 +116,7 @@ const mapDispatchToProps = (dispatch) => {
 		userLogin: (username, password) => {
 			dispatch(userLogin(username, password));
 		},
+		getAllSupplies: () => dispatch(getAllSupplies()),
 	};
 };
 

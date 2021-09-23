@@ -43,7 +43,7 @@ export const addSupplyReducer = (state = initialState, action) => {
 
 const startState = {
 	loading: false,
-	products: {},
+	products: [],
 	error: null,
 }
 
@@ -64,7 +64,7 @@ export const allProductsReducer = (state = startState, action) => {
 		case Types.GET_FAIL: return {
 			...state,
 			loading: false,
-			products: {},
+			products: [],
 			error: action.payload,
 		}
 
