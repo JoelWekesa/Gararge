@@ -14,6 +14,12 @@ const Carwashes = db.define("Carwashes", {
 	price: {
 		type: DataTypes.BIGINT,
 	},
+	month: {
+		type: DataTypes.BIGINT,
+	},
+	year: {
+		type: DataTypes.BIGINT,
+	},
 });
 
 module.exports = {

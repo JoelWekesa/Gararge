@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
 import { getAllStaff } from "../redux/staff/actions";
 import { getWeeklySales } from "../redux/sales/actions.";
 import { getWeeklyWashes } from "../redux/carwash/actions";
@@ -38,6 +37,8 @@ export class Home extends Component {
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
 		}
+
+		
 
 		try {
 			const { rows } = supplies.products.supplies;
@@ -81,7 +82,7 @@ export class Home extends Component {
 										<i className="mdi mdi-bookmark-outline mdi-24px float-right"></i>
 									</h4>
 									<h2 className="mb-5">KSH {washes.amount.total}</h2>
-									<h6 className="card-text">Washes this week</h6>
+									<h6 className="card-text">Washes this month</h6>
 								</div>
 							</div>
 						</div>
@@ -198,10 +199,8 @@ export class Home extends Component {
 				</div>
 			);
 		} catch (error) {
-			return (
-				<div className="container mx-auto mb-3">
-					<CircularProgress />
-				</div>
+			return ( 
+				<Redirect to="/" />
 			);
 		}
 	}

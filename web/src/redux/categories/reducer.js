@@ -36,3 +36,42 @@ export const categoriesReducer = (state = initialState, action) => {
 			return state;
 	}
 };
+
+/** Add Category */
+
+const alphaState = {
+	loading: false,
+	category: {},
+	error: null,
+};
+
+export const addCategoryReducer = (state = alphaState, action) => {
+	switch (action.type) {
+		case Types.START_ADD:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case Types.ADD_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				category: action.payload,
+				error: null,
+			};
+
+		case Types.ADD_FAIL:
+			return {
+				...state,
+				loading: false,
+				category: {},
+				error: action.payload,
+			};
+
+		default:
+			return state;
+	}
+};
+
+/** End of add category */

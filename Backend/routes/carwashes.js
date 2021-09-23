@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const { Carwashes } = require("../models/Carwashes");
 const { Washprices } = require("../models/Washprices");
-const { admin } = require("../middleware/admin/check")
-const { Op } = require("sequelize")
+const { admin } = require("../middleware/admin/check");
+const { Op } = require("sequelize");
 
 const router = Router();
 
@@ -33,6 +33,8 @@ router.post("/add", [admin], async (req, res) => {
 				type,
 				plates: plates.toUpperCase(),
 				price: item.price,
+				month: new Date().getMonth(),
+				year: new Date().getFullYear(),
 			})
 				.then(() => {
 					return res
@@ -47,7 +49,6 @@ router.post("/add", [admin], async (req, res) => {
 		return res.status(500).json({ message: err.message });
 	}
 });
-
 
 //? Get all washes
 
@@ -71,10 +72,10 @@ router.get("/weekly", [admin], (req, res) => {
 	try {
 		Carwashes.findAll({
 			where: {
-				createdAt: {
-					[Op.lt]: new Date(),
-					[Op.gt]: new Date(new Date() - 24 * 7 * 60 * 60 * 1000),
-				},
+				[Op.and]: [
+					{ month: new Date().getMonth() },
+					{ year: new Date().getFullYear() },
+				],
 			},
 		})
 			.then((data) => {
@@ -153,7 +154,7 @@ router.get("/totals/today", async (req, res) => {
 router.get("/totals/today/:id", async (req, res) => {
 	try {
 		let today = 0;
-        let vehicles = [];
+		let vehicles = [];
 		let start = new Date();
 		const { id } = req.params;
 
@@ -170,7 +171,7 @@ router.get("/totals/today/:id", async (req, res) => {
 						wash.createdAt >= new Date(start)
 					) {
 						today += parseInt(wash.price);
-                        vehicles.push(wash.type)
+						vehicles.push(wash.type);
 					}
 				});
 

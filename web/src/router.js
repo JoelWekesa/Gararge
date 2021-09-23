@@ -16,6 +16,7 @@ const Supply = lazy(() => import("./components/Supply"));
 const Sales = lazy(() => import("./components/Sales"));
 const Sale = lazy(() => import("./components/Sale"));
 const Departments = lazy(() => import("./components/Departments"));
+const Categories = lazy(() => import("./components/Categories"))
 
 const Routes = () => (
 	<Suspense fallback={<h1>Still Loading…</h1>}>
@@ -38,6 +39,7 @@ const Routes = () => (
 				<Route exact path="/sales/all" component={Sales} />
 				<Route exact path="/supply/:id" component={Supply} />
 				<Route exact path="/sale/:id" component={Sale} />
+				<Route exact path="/categories/add" component={Categories} />
 				<Route component={Missing} />
 			</Switch>
 		</Router>

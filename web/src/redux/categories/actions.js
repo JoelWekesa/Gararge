@@ -43,3 +43,49 @@ export const allCategories = () => {
 };
 
 //? End
+
+/** Add Category */
+
+const startAdd = () => {
+	return {
+		type: Types.START_ADD,
+	};
+};
+
+const addSuccess = (data) => {
+	return {
+		type: Types.ADD_SUCCESS,
+		payload: data,
+	};
+};
+
+const addFail = (message) => {
+	return {
+		type: Types.ADD_FAIL,
+		payload: message,
+	};
+};
+
+export const addCategory = (name, description) => {
+	return (dispatch, getState) => {
+		dispatch(startAdd());
+		const body = {
+			name,
+			description,
+		};
+
+		const url = `${baseUrl}/categories/add`;
+		axios
+			.post(url, body, configHelper(getState))
+			.then((res) => {
+				const { data } = res;
+				dispatch(addSuccess(data));
+			})
+			.catch((err) => {
+				const { message } = err;
+				dispatch(addFail(message));
+			});
+	};
+};
+
+/** End of add category */

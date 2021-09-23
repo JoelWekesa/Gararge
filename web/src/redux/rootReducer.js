@@ -13,7 +13,7 @@ import {
 	specificProductReducer,
 	editProductReducer,
 } from "./supplies/reducer";
-import { categoriesReducer } from "./categories/reducer";
+import { categoriesReducer, addCategoryReducer } from "./categories/reducer";
 import { washReducer, addWashReducer, weeklyWashesReducer } from "./carwash/reducer";
 import { cartReducer, saleReducer, weeklySalesReducer } from "./sales/reducer";
 
@@ -26,6 +26,7 @@ export const rootReducer = combineReducers({
 	staff: allStaffReducer,
 	newsupply: addSupplyReducer,
 	categories: categoriesReducer,
+	addcategory: addCategoryReducer,
 	wash: washReducer,
 	addwash: addWashReducer,
 	supplies: allProductsReducer,
