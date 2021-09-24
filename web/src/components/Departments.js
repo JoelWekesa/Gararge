@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import Alert from "react-bootstrap/Alert";
 import { allDepartments, addDepartment } from "../redux/departments/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class Departments extends Component {
 	state = {
@@ -11,6 +12,7 @@ export class Departments extends Component {
 		open: false,
 	};
 	componentDidMount = async () => {
+		await this.props.checkToken();
 		await this.props.allDepartments();
 	};
 
@@ -43,13 +45,26 @@ export class Departments extends Component {
 	};
 
 	render() {
-		const { auth, departments, adddepartment } = this.props;
+		const { auth, departments, adddepartment, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { isAuthenticated } = auth;
 		const { department, open } = this.state;
 		try {
 			const { rows } = departments.departments.departments;
 			const { loading, error } = adddepartment;
 			if (!isAuthenticated) {
+				return <Redirect to="/auth/login" />;
+			}
+
+			if (initializing) {
+				return (
+					<div className="mb-5 mt-5">
+						<CircularProgress />
+					</div>
+				);
+			}
+
+			if (!initializing && unverified) {
 				return <Redirect to="/auth/login" />;
 			}
 			return (
@@ -156,6 +171,7 @@ const mapStateToProps = (state) => {
 		auth: state.auth,
 		departments: state.departments,
 		adddepartment: state.adddepartment,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -163,6 +179,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		allDepartments: () => dispatch(allDepartments()),
 		addDepartment: (department) => dispatch(addDepartment(department)),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

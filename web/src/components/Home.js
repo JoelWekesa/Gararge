@@ -7,12 +7,14 @@ import { getWeeklySales } from "../redux/sales/actions.";
 import { getWeeklyWashes } from "../redux/carwash/actions";
 import { getAllSupplies, specificSupply } from "../redux/supplies/actions";
 import { addToCart } from "../redux/sales/actions.";
+import { checkToken } from "../redux/auth/actions";
 
 export class Home extends Component {
 	state = {
 		term: "",
 	};
 	componentDidMount = async () => {
+		await this.props.checkToken();
 		await this.props.getAllStaff();
 		await this.props.getWeeklySales();
 		await this.props.getWeeklyWashes();
@@ -32,10 +34,21 @@ export class Home extends Component {
 	};
 
 	render() {
-		const { auth, weekly, washes, supplies } = this.props;
+		const { auth, weekly, washes, supplies, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck
 		const { isAuthenticated } = auth;
 		const { term } = this.state;
 		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return <div className="mb-5 mt-5">
+				<CircularProgress />
+			</div>
+		}
+
+		if (!initializing && unverified) {
 			return <Redirect to="/auth/login" />;
 		}
 
@@ -198,10 +211,12 @@ export class Home extends Component {
 				</div>
 			);
 		} catch (error) {
-			return <div className="mt-5 mb-5">
-				<CircularProgress />
-			</div>
-		} 
+			return (
+				<div className="mt-5 mb-5">
+					<CircularProgress />
+				</div>
+			);
+		}
 	}
 }
 
@@ -211,6 +226,7 @@ const mapStateToProps = (state) => {
 		weekly: state.weekly,
 		washes: state.washes,
 		supplies: state.supplies,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -222,6 +238,7 @@ const mapDispatchToProps = (dispatch) => {
 		getAllSupplies: () => dispatch(getAllSupplies()),
 		specificSupply: (id) => dispatch(specificSupply(id)),
 		addToCart: (item) => dispatch(addToCart(item)),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

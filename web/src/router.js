@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-
+import { CircularProgress } from "@material-ui/core";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 const Home = lazy(() => import("./components/Home"));
 const Login = lazy(() => import("./components/Login"));
@@ -16,10 +16,15 @@ const Supply = lazy(() => import("./components/Supply"));
 const Sales = lazy(() => import("./components/Sales"));
 const Sale = lazy(() => import("./components/Sale"));
 const Departments = lazy(() => import("./components/Departments"));
-const Categories = lazy(() => import("./components/Categories"))
+const Categories = lazy(() => import("./components/Categories"));
 
 const Routes = () => (
-	<Suspense fallback={<h1>Still Loading…</h1>}>
+	<Suspense
+		fallback={
+			<div className="mt-5 mb-5">
+				<CircularProgress />
+			</div>
+		}>
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />

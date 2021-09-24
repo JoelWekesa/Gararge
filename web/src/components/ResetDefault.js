@@ -103,7 +103,7 @@ export class ResetDefault extends Component {
 							onChange={this.handleChange}
 						/>
 					</div>
-					{loading ? (
+					{loading || open? (
 						<CircularProgress />
 					) : (
 						<button

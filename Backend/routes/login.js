@@ -22,6 +22,10 @@ router.post("/login", (req, res) => {
 					});
 				}
 
+				if(!user.admin || !user.super_admin) {
+					return res.status(403).json({message: "Unauthorized to perform this function."})
+				}
+
 				const valid = bcrypt.compareSync(password, user.password);
 				if (!valid) {
 					return res.status(400).json({

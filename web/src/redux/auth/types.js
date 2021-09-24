@@ -5,3 +5,6 @@ export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const START_RESET = "START_RESET";
 export const RESET_SUCCESS = "RESET_SUCCESS";
 export const RESET_FAIL = "RESET_FAIL";
+export const START_CHECK = "START_CHECK";
+export const CHECK_SUCCESS = "CHECK_SUCCESS";
+export const CHECK_FAIL = "CHECK_FAIL";

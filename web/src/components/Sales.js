@@ -10,6 +10,7 @@ import {
 	clearCart,
 	newSale,
 } from "../redux/sales/actions.";
+import { checkToken } from "../redux/auth/actions";
 
 export class Sales extends Component {
 	state = {
@@ -18,6 +19,7 @@ export class Sales extends Component {
 		price: 0,
 	};
 	componentDidMount = async () => {
+		await this.props.checkToken();
 		await this.props.getAllSupplies();
 	};
 
@@ -77,11 +79,24 @@ export class Sales extends Component {
 	};
 
 	render() {
-		const { auth, supplies, cart } = this.props;
+		const { auth, supplies, cart, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { term, loading } = this.state;
 		const { isAuthenticated } = auth;
 		let grandtotal = 0;
 		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
 			return <Redirect to="/auth/login" />;
 		}
 
@@ -285,6 +300,7 @@ const mapStateToProps = (state) => {
 		auth: state.auth,
 		supplies: state.supplies,
 		cart: state.cart.cart,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -297,6 +313,7 @@ const mapDispatchToProps = (dispatch) => {
 		removeFromCart: (item) => dispatch(removeFromCart(item)),
 		clearCart: () => dispatch(clearCart()),
 		newSale: (quantity, price, id) => dispatch(newSale(quantity, price, id)),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

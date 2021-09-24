@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as Types from "./types";
 import { baseUrl } from "../../config/baseUrl";
+import { configHelper } from "../../config/helper";
 
 //? Login
 const authStart = () => {
@@ -112,3 +113,38 @@ export const passwordReset = (username, code, password) => {
 	};
 };
 //? End of reset dispatch
+
+
+//* Check auth token
+
+const startCheck = () => {
+	return {
+		type: Types.START_CHECK
+	}
+}
+
+const checkSuccess = () => {
+	return {
+		type: Types.CHECK_SUCCESS,
+	}
+}
+
+const checkFail = () => {
+	return {
+		type: Types.CHECK_FAIL,
+	}
+}
+
+export const checkToken = () => {
+	return (dispatch, getState) => {
+		dispatch(startCheck());
+		const url = `${baseUrl}/staff/check`
+		axios.get(url, configHelper(getState)).then(() => {
+			dispatch(checkSuccess());
+		}).catch(()=> {
+			dispatch(checkFail());
+		})
+	}
+}
+
+//* End of check auth token

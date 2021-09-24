@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { allCategories } from "../redux/categories/actions";
 import { addSupply } from "../redux/supplies/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class AddSupply extends Component {
 	state = {
@@ -22,8 +23,9 @@ export class AddSupply extends Component {
 		
 	};
 
-	componentDidMount = () => {
-		this.props.allCategories();
+	componentDidMount = async () => {
+		await this.props.checkToken();
+		await this.props.allCategories();
 	};
 
 	handleChange = (e) => {
@@ -84,7 +86,8 @@ export class AddSupply extends Component {
 	render() {
 		const { open, name, description, price, selling_price, quantity, category, } =
 			this.state;
-		const { auth, newsupply } = this.props;
+		const { auth, newsupply, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { categories } = this.props.categories;
 		const { isAuthenticated } = auth;
 		const { error, loading } = newsupply;
@@ -93,8 +96,24 @@ export class AddSupply extends Component {
 			return <Redirect to="/auth/login" />;
 		}
 		const { admin, super_admin } = auth.staff.user;
-		if (!admin && !super_admin) {
-			return <Unauthorized />;
+		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if(!admin || !super_admin) {
+			return <Unauthorized />
 		}
 
 		return (
@@ -250,14 +269,18 @@ const mapStateToProps = (state) => {
 		auth: state.auth,
 		categories: state.categories,
 		newsupply: state.newsupply,
+		tokencheck: state.tokencheck,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		addSupply: (name, description, price, selling_price, quantity, category) =>
-			dispatch(addSupply(name, description, price, selling_price, quantity, category)),
+			dispatch(
+				addSupply(name, description, price, selling_price, quantity, category)
+			),
 		allCategories: () => dispatch(allCategories()),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

@@ -3,12 +3,14 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { getAllSupplies, specificSupply } from "../redux/supplies/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class Supplies extends Component {
 	state = {
 		term: "",
 	};
 	componentDidMount = async () => {
+		await this.props.checkToken();
 		await this.props.getAllSupplies();
 	};
 
@@ -26,13 +28,25 @@ export class Supplies extends Component {
 	};
 
 	render() {
-		const { auth, supplies } = this.props;
+		const { auth, supplies, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { term } = this.state;
 		const { isAuthenticated } = auth;
 		if (!isAuthenticated) {
 			return <Redirect to="/auth/login" />;
 		}
 
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
+			return <Redirect to="/auth/login" />;
+		}
 		try {
 			const { rows } = supplies.products.supplies;
 			return (
@@ -134,6 +148,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
 		supplies: state.supplies,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -141,6 +156,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getAllSupplies: () => dispatch(getAllSupplies()),
 		specificSupply: (id) => dispatch(specificSupply(id)),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

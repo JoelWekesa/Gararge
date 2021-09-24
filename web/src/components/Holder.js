@@ -29,7 +29,7 @@ export class Holder extends Component {
 							<img src={image} alt="logo" />
 						</a>
 						<a className="navbar-brand brand-logo-mini" href="/">
-							<img src="../assets/logo.png" alt="logo" />
+							<img src={image} alt="logo" />
 						</a>
 					</div>
 					<div className="navbar-menu-wrapper d-flex align-items-stretch">

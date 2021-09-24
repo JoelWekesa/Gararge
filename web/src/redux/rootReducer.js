@@ -1,11 +1,14 @@
 import { combineReducers } from "redux";
-import { loginReducer } from "./auth/reducer";
 import {
 	departmentsReducer,
 	addDepartmentReducer,
 } from "./departments/reducer";
 import { addStaffReducer } from "./staff/reducer";
-import { passwordResetReducer } from "./auth/reducer";
+import {
+	passwordResetReducer,
+	loginReducer,
+	checkTokenReducer,
+} from "./auth/reducer";
 import { allStaffReducer } from "./staff/reducer";
 import {
 	addSupplyReducer,
@@ -18,6 +21,7 @@ import { washReducer, addWashReducer, weeklyWashesReducer } from "./carwash/redu
 import { cartReducer, saleReducer, weeklySalesReducer } from "./sales/reducer";
 
 export const rootReducer = combineReducers({
+	tokencheck: checkTokenReducer,
 	auth: loginReducer,
 	departments: departmentsReducer,
 	adddepartment: addDepartmentReducer,

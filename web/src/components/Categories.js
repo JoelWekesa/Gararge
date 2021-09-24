@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
 import { addCategory } from "../redux/categories/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class Categories extends Component {
 	state = {
@@ -12,6 +13,11 @@ export class Categories extends Component {
 		loading: false,
 		open: false,
 	};
+
+	componentDidMount = async () => {
+		await this.props.checkToken();
+	}
+	
 
 	handleChange = (e) => {
 		const { name, value } = e.target;
@@ -48,10 +54,23 @@ export class Categories extends Component {
 
 	render() {
 		const { name, description, loading, open } = this.state;
-		const { auth, category } = this.props;
+		const { auth, category, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { error } = category;
 		const { isAuthenticated } = auth;
 		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
 			return <Redirect to="/auth/login" />;
 		}
 		return (
@@ -122,6 +141,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
 		category: state.addcategory.category,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -129,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addCategory: (name, description) =>
 			dispatch(addCategory(name, description)),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

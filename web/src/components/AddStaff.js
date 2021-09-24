@@ -7,6 +7,7 @@ import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 import { allDepartments } from "../redux/departments/actions";
 import { addNewStaff } from "../redux/staff/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class AddStaff extends Component {
 	state = {
@@ -20,7 +21,8 @@ export class AddStaff extends Component {
 		open: false,
 	};
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
+		await this.props.checkToken();
 		this.props.allDepartments();
 	};
 
@@ -103,11 +105,24 @@ export class AddStaff extends Component {
 			department,
 			email,
 		} = this.state;
-		const { departments, auth, newstaff } = this.props;
+		const { departments, auth, newstaff, tokencheck} = this.props;
+		const { initializing, unverified } = tokencheck;
 		const { isAuthenticated } = auth;
 		const { error, loading } = newstaff;
 
 		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
 			return <Redirect to="/auth/login" />;
 		}
 		const { admin, super_admin } = auth.staff.user;
@@ -267,6 +282,7 @@ const mapStateToProps = (state) => {
 		auth: state.auth,
 		departments: state.departments,
 		newstaff: state.newstaff,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -293,6 +309,7 @@ const mapDispatchToProps = (dispatch) => {
 					department
 				)
 			),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 

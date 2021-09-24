@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { userLogout } from "../redux/auth/actions";
 
+
 export class Holder extends Component {
 	render() {
 		return (

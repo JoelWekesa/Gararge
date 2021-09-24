@@ -87,3 +87,37 @@ export const passwordResetReducer = (state = startState, action) => {
 };
 
 //** End of password reset reducer */
+
+//! Check auth token reducer
+
+const alphaState = {
+	initializing: false,
+	verified: false,
+	unverified: true,
+};
+
+export const checkTokenReducer = (state = alphaState, action) => {
+	switch (action.type) {
+		case Types.START_CHECK: return {
+			initializing: true,
+		}
+
+		case Types.CHECK_SUCCESS: return {
+			...state,
+			initializing: false,
+			verified: true,
+			unverified: false,	
+		}
+
+		case Types.CHECK_FAIL: return {
+			...state,
+			initializing: false,
+			verified: false,
+			unverified: true,
+		};
+
+		default: return state;
+	}
+};
+
+//! End of check auth token reducer

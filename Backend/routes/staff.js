@@ -6,8 +6,36 @@ const { Users } = require("../models/Staff");
 const { Resetcodes } = require("../models/ResetCodes");
 const { admin } = require("../middleware/admin/check");
 const nodemailer = require("nodemailer");
+const { secrets } = process.env;
+const jwt = require("jsonwebtoken");
 
 const router = Router();
+
+/**Check if user is authenticated */
+
+router.get("/check", async (req, res) => {
+	try {
+
+		const token = req.headers["x-access-token"];
+		if (!token) {
+			return res.status(403).json({ message: "No access token provided" });
+		}
+
+		jwt.verify(token, secrets, (err, decoded) => {
+			if (err) {
+				return res.status(403).json({ message: err.message })
+			}
+
+			return res.status(200).json({ message: decoded})
+		})
+		
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
+	}
+	
+})
+
+/**End of check for authenticated*/
 
 //? Add new staff
 
@@ -44,20 +72,7 @@ router.post("/add", [admin], (req, res) => {
 				password: bcrypt.hashSync((generator * Math.random()).toString(), 10),
 			})
 				.then(async (user) => {
-					await Resetcodes.create({
-						user: user.id,
-						code: bcrypt.hashSync(generator.toString(), 10),
-					})
-						.then(() => {
-							return res.status(200).json({
-								Success: "Successfully added a staff member.",
-							});
-						})
-						.catch((err) => {
-							return res.status(400).json({
-								message: err.message,
-							});
-						});
+					return res.status(200).json({user})
 				})
 				.catch((err) => {
 					return res.status(400).json({
@@ -160,6 +175,10 @@ router.post("/request/code", async (req, res) => {
 			.then(async (user) => {
 				if (!user) {
 					return res.status(404).json({ message: "Invalid username" });
+				}
+
+				if (!user.admin || !user.super_admin) {
+					return res.status(403).json({ message: "Unauthorized" });
 				}
 
 				await Resetcodes.destroy({ where: { user: user.id } })

@@ -8,6 +8,7 @@ import { CircularProgress } from "@material-ui/core";
 import { allDepartments } from "../redux/departments/actions";
 import { addNewStaff, getAllStaff } from "../redux/staff/actions";
 import { washPrices, addWashRecord } from "../redux/carwash/actions";
+import { checkToken } from "../redux/auth/actions";
 
 export class AddCarwashRecord extends Component {
 	state = {
@@ -17,10 +18,11 @@ export class AddCarwashRecord extends Component {
 		open: false,
 	};
 
-	componentDidMount = () => {
-		this.props.allDepartments();
-		this.props.getAllStaff();
-		this.props.washPrices();
+	componentDidMount = async () => {
+		await this.props.checkToken();
+		await this.props.allDepartments();
+		await this.props.getAllStaff();
+		await this.props.washPrices();
 	};
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -68,12 +70,25 @@ export class AddCarwashRecord extends Component {
 	};
 	render() {
 		const { open, member, plates, type } = this.state;
-		const { auth, staff, wash, addwash } = this.props;
+		const { auth, staff, wash, addwash, tokencheck } = this.props;
+		const { initializing, unverified } = tokencheck;
 
 		const { isAuthenticated } = auth;
 		const { error, loading } = addwash;
 
 		if (!isAuthenticated) {
+			return <Redirect to="/auth/login" />;
+		}
+
+		if (initializing) {
+			return (
+				<div className="mb-5 mt-5">
+					<CircularProgress />
+				</div>
+			);
+		}
+
+		if (!initializing && unverified) {
 			return <Redirect to="/auth/login" />;
 		}
 		const { admin, super_admin } = auth.staff.user;
@@ -194,6 +209,7 @@ const mapStateToProps = (state) => {
 		staff: state.staff,
 		wash: state.wash,
 		addwash: state.addwash,
+		tokencheck: state.tokencheck,
 	};
 };
 
@@ -222,6 +238,7 @@ const mapDispatchToProps = (dispatch) => {
 					department
 				)
 			),
+		checkToken: () => dispatch(checkToken()),
 	};
 };
 
