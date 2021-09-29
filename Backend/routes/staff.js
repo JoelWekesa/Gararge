@@ -215,7 +215,7 @@ router.post("/request/code", async (req, res) => {
 										}
 
 										return res.status(200).json({
-											Success: "Email sent successfully.",
+											Success: "Email with password reset code has been sent.",
 											data,
 										});
 									}
