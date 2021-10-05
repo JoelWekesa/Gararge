@@ -108,7 +108,7 @@ router.post("/add/:id", [admin], async (req, res) => {
 							)
 								.then(() => {
 									return res.status(200).json({
-										Success: "Successfully made a sale.",
+										message: "Successfully made a sale.",
 										sale,
 									});
 								})

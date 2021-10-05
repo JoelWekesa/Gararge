@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/all", [admin], async (req, res) => {
 	try {
-		await Supplies.findAndCountAll({ order: [["id", "DESC"]] })
+		await Supplies.findAndCountAll({ order: [["available", "DESC"], ["id", "DESC"]] })
 			.then((supplies) => {
 				return res
 					.status(200)
@@ -117,9 +117,9 @@ router.post("/add", [admin], async (req, res) => {
 
 //? Update supplies
 
-router.put("/edit/:id", async (req, res) => {
+router.put("/edit/:id", [admin], async (req, res) => {
 	try {
-		const { description, selling_price, quantity, category } = req.body;
+		const { description, price, selling_price, quantity, category } = req.body;
 		const { id } = req.params;
 		const token = req.headers["x-access-token"];
 		await jwt.verify(token, secrets, (err, decoded) => {
@@ -153,8 +153,11 @@ router.put("/edit/:id", async (req, res) => {
 
 					Supplies.update(
 						{
+							price: price ? price : supply.price,
 							description: description ? description : supply.description,
-							selling_price: selling_price ? selling_price : supply.selling_price,
+							selling_price: selling_price
+								? selling_price
+								: supply.selling_price,
 							quantity: quantity
 								? parseInt(supply.quantity) + parseInt(quantity)
 								: supply.quantity,
